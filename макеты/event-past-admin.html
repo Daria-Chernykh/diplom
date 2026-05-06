@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PopCulture Events — Прошедшее мероприятие</title>
+  <title>PopCulture Events — Проверка отзыва</title>
   <style>
     :root{
       --surface:#ffffff;
@@ -504,13 +504,11 @@
       flex-wrap:wrap;
     }
 
-    #report-review-1:checked ~ .review-card.reportable-1,
-    #report-review-2:checked ~ .review-card.reportable-2{
+    #report-review-1:checked ~ .review-card.reportable{
       display:none;
     }
 
-    #report-review-1:checked ~ .review-hidden-state-1,
-    #report-review-2:checked ~ .review-hidden-state-2{
+    #report-review-1:checked ~ .review-hidden-state{
       display:block;
     }
 
@@ -697,6 +695,41 @@
       padding-top:6px;
     }
 
+
+    .reported-review{
+      border-color:#f4b4b0;
+      background:#fff7f7;
+      box-shadow:0 10px 30px rgba(240,68,56,.10);
+    }
+
+    .reported-review-label{
+      display:inline-flex;
+      width:max-content;
+      max-width:100%;
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(240,68,56,.12);
+      color:var(--danger);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .admin-review-actions{
+      border:1px solid #f4b4b0;
+      border-radius:14px;
+      background:#fff;
+      padding:14px;
+      display:grid;
+      gap:12px;
+    }
+
+    .admin-review-actions p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+    }
+
     @media (max-width:1080px){
       .page{grid-template-columns:1fr}
       .events-grid{grid-template-columns:repeat(2, 1fr)}
@@ -744,8 +777,7 @@
         <a href="legal-documents.html">Документы</a>
       </nav>
       <div class="actions">
-        <a class="btn btn-outline" href="login.html">Вход</a>
-        <a class="btn btn-primary" href="register.html">Регистрация</a>
+        <a class="btn btn-primary" href="admin-cabinet.html">Личный кабинет</a>
       </div>
     </div>
   </header>
@@ -831,7 +863,7 @@
         <div>
           <h2>Отзывы</h2>
         </div>
-        <label class="btn btn-primary" for="review-modal">Оставить отзыв</label>
+        <a class="btn btn-outline" href="admin-cabinet.html">Вернуться к жалобам</a>
       </div>
 
       <div class="rating-summary">
@@ -869,25 +901,16 @@
           </div>
         </article>
 
-        <input class="report-toggle" type="checkbox" id="report-review-1" />
-
-        <article class="review-card reportable-1">
+        <article class="review-card reported-review" id="reported-review">
           <div class="review-top">
             <div class="review-author">
               <strong>Мария Петрова</strong>
               <span>16 марта 2026</span>
             </div>
 
-            <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;justify-content:flex-end;">
+              <span class="reported-review-label">Жалоба на отзыв</span>
               <div class="stars">★ ★ ★ ★ <span class="empty">★</span></div>
-
-              <div class="review-menu">
-                <input class="menu-open" type="checkbox" id="review-menu-1" />
-                <label class="menu-button" for="review-menu-1">⋯</label>
-                <div class="menu-dropdown">
-                  <label class="menu-action" for="report-review-1">Пометить как неприемлемый контент</label>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -900,49 +923,32 @@
             <div class="review-photo"></div>
             <div class="review-photo"></div>
           </div>
+
+          <div class="admin-review-actions">
+            <p>
+              На этот отзыв отправлена жалоба. Администратор может оставить отзыв без изменений
+              или удалить отзыв вместе с блокировкой пользователя, если контент нарушает правила платформы.
+            </p>
+
+            <div class="modal-actions">
+              <button class="btn btn-danger" type="button">Заблокировать пользователя и удалить отзыв</button>
+              <button class="btn btn-primary" type="button">Оставить отзыв</button>
+            </div>
+          </div>
         </article>
 
-        <div class="review-hidden-state review-hidden-state-1">
-          <strong>Отзыв временно скрыт</strong>
-          <div>На отзыв отправлена жалоба, он ожидает проверки администратором.</div>
-          <div class="review-hidden-actions">
-            <label class="btn btn-outline" for="report-review-1">Отмена</label>
-          </div>
-        </div>
-
-        <input class="report-toggle" type="checkbox" id="report-review-2" />
-
-        <article class="review-card reportable-2">
+        <article class="review-card">
           <div class="review-top">
             <div class="review-author">
               <strong>Алексей Смирнов</strong>
               <span>15 марта 2026</span>
             </div>
-
-            <div style="display:flex;gap:10px;align-items:flex-start;">
-              <div class="stars">★ ★ ★ ★ ★</div>
-
-              <div class="review-menu">
-                <input class="menu-open" type="checkbox" id="review-menu-2" />
-                <label class="menu-button" for="review-menu-2">⋯</label>
-                <div class="menu-dropdown">
-                  <label class="menu-action" for="report-review-2">Пометить как неприемлемый контент</label>
-                </div>
-              </div>
-            </div>
+            <div class="stars">★ ★ ★ ★ ★</div>
           </div>
           <p class="review-text">
             Отличная встреча для сообщества. Было много активностей и хорошая атмосфера.
           </p>
         </article>
-
-        <div class="review-hidden-state review-hidden-state-2">
-          <strong>Отзыв временно скрыт</strong>
-          <div>На отзыв отправлена жалоба, он ожидает проверки администратором.</div>
-          <div class="review-hidden-actions">
-            <label class="btn btn-outline" for="report-review-2">Отмена</label>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -984,48 +990,5 @@
     </section>
   </main>
 
-  <input class="modal-toggle" type="checkbox" id="review-modal" />
-
-  <div class="modal">
-    <section class="modal-card">
-      <div class="modal-head">
-        <h2>Оставить отзыв</h2>
-        <label class="close" for="review-modal">×</label>
-      </div>
-
-      <form class="review-form">
-        <div class="field">
-          <label>Оценка</label>
-          <div class="star-picker">
-            <input type="radio" name="rating" id="star-5" />
-            <label for="star-5">★</label>
-            <input type="radio" name="rating" id="star-4" />
-            <label for="star-4">★</label>
-            <input type="radio" name="rating" id="star-3" />
-            <label for="star-3">★</label>
-            <input type="radio" name="rating" id="star-2" />
-            <label for="star-2">★</label>
-            <input type="radio" name="rating" id="star-1" />
-            <label for="star-1">★</label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="review-photos">Фотографии</label>
-          <input id="review-photos" type="file" multiple />
-        </div>
-
-        <div class="field">
-          <label for="review-text">Комментарий</label>
-          <textarea id="review-text" placeholder="Напишите отзыв по желанию"></textarea>
-        </div>
-
-        <div class="modal-actions">
-          <label class="btn btn-outline" for="review-modal">Отмена</label>
-          <button class="btn btn-primary" type="button">Опубликовать отзыв</button>
-        </div>
-      </form>
-    </section>
-  </div>
 </body>
 </html>

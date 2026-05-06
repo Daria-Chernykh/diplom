@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PopCulture Events — Жалобы администратора</title>
+  <title>PopCulture Events — Жалобы</title>
   <style>
     :root{
       --surface:#ffffff;
@@ -15,13 +15,12 @@
       --primary-soft:#e0e7ff;
       --shadow:0 10px 30px rgba(17,24,39,.08);
       --radius:18px;
+      --success:#12b76a;
       --warning:#f79009;
       --danger:#f04438;
     }
 
-    *{
-      box-sizing:border-box;
-    }
+    *{box-sizing:border-box}
 
     body{
       margin:0;
@@ -30,10 +29,7 @@
       background:linear-gradient(180deg,#eef2ff 0%,#f4f6fb 100%);
     }
 
-    a{
-      color:inherit;
-      text-decoration:none;
-    }
+    a{color:inherit;text-decoration:none}
 
     .header{
       background:rgba(255,255,255,.92);
@@ -71,9 +67,7 @@
       flex-wrap:wrap;
     }
 
-    .nav a:hover{
-      color:var(--primary);
-    }
+    .nav a:hover{color:var(--primary)}
 
     .actions{
       display:flex;
@@ -109,6 +103,12 @@
       box-shadow:0 8px 20px rgba(79,70,229,.24);
     }
 
+    .btn-danger{
+      background:#fff;
+      color:var(--danger);
+      border-color:#f4b4b0;
+    }
+
     .page{
       max-width:1280px;
       margin:0 auto;
@@ -139,8 +139,9 @@
 
     .sidebar,
     .content,
+    .filter-panel,
     .complaint-card,
-    .toolbar{
+    .review-complaint-card{
       background:var(--surface);
       border:1px solid var(--border);
       border-radius:var(--radius);
@@ -186,20 +187,6 @@
       color:var(--primary-dark);
     }
 
-    .counter{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-width:24px;
-      height:24px;
-      padding:0 7px;
-      border-radius:999px;
-      background:var(--primary);
-      color:#fff;
-      font-size:12px;
-      font-weight:700;
-    }
-
     .content{
       padding:20px;
       display:grid;
@@ -220,25 +207,74 @@
       font-size:22px;
     }
 
-    .toolbar{
+    .type-toggle-input{display:none}
+
+    .type-toggle{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .type-label{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:44px;
+      padding:0 16px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--text);
+      font-weight:700;
+      font-size:14px;
+      cursor:pointer;
+    }
+
+    .type-label::before{
+      content:"";
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      border:2px solid var(--border);
+      background:#fff;
+      flex:0 0 auto;
+    }
+
+    #complaints-events:checked ~ .filter-panel .type-label[for="complaints-events"],
+    #complaints-reviews:checked ~ .filter-panel .type-label[for="complaints-reviews"]{
+      border-color:#cfd8ff;
+      background:var(--primary-soft);
+      color:var(--primary-dark);
+    }
+
+    #complaints-events:checked ~ .filter-panel .type-label[for="complaints-events"]::before,
+    #complaints-reviews:checked ~ .filter-panel .type-label[for="complaints-reviews"]::before{
+      border-color:var(--primary);
+      background:
+        radial-gradient(circle, var(--primary) 0 42%, transparent 46%),
+        #fff;
+    }
+
+    .filter-panel{
       box-shadow:none;
       padding:16px;
       display:grid;
-      grid-template-columns:1fr 240px auto;
-      gap:12px;
-      align-items:end;
+      gap:14px;
       background:#f8faff;
     }
 
-    .field label{
-      display:block;
-      margin-bottom:8px;
+    .status-filter{
+      display:grid;
+      grid-template-columns:minmax(220px, 320px);
+      gap:8px;
+    }
+
+    .status-filter label{
       font-size:13px;
       font-weight:700;
     }
 
-    .field input,
-    .field select{
+    .status-filter select{
       width:100%;
       min-height:44px;
       border:1px solid var(--border);
@@ -251,36 +287,26 @@
       color:var(--text);
     }
 
-    .field select{
-      appearance:none;
-      background:
-        linear-gradient(45deg, transparent 50%, var(--muted) 50%),
-        linear-gradient(135deg, var(--muted) 50%, transparent 50%),
-        #fff;
-      background-position:
-        calc(100% - 18px) 19px,
-        calc(100% - 13px) 19px,
-        0 0;
-      background-size:
-        5px 5px,
-        5px 5px,
-        100% 100%;
-      background-repeat:no-repeat;
-      padding-right:38px;
+    .event-complaints,
+    .review-complaints{
+      display:none;
+      gap:14px;
     }
 
-    .complaints-list{
-      display:grid;
-      gap:16px;
-    }
+    #complaints-events:checked ~ .event-complaints{display:grid}
+    #complaints-reviews:checked ~ .review-complaints{display:grid}
+
+    #complaints-events:checked ~ .filter-panel .event-status-controls{display:grid}
+    #complaints-reviews:checked ~ .filter-panel .event-status-controls{display:none}
 
     .complaint-card{
-      padding:18px;
+      padding:16px;
       display:grid;
-      gap:16px;
+      gap:14px;
     }
 
-    .complaint-head{
+    .complaint-head,
+    .review-complaint-head{
       display:flex;
       justify-content:space-between;
       align-items:flex-start;
@@ -288,27 +314,28 @@
       flex-wrap:wrap;
     }
 
-    .complaint-title{
+    .complaint-title,
+    .review-complaint-title{
       display:grid;
       gap:6px;
     }
 
-    .complaint-title h3{
+    .complaint-title h3,
+    .review-complaint-title h3{
       margin:0;
-      font-size:20px;
+      font-size:19px;
       line-height:1.3;
     }
 
-    .complaint-title span{
+    .complaint-title span,
+    .review-complaint-title span{
       color:var(--muted);
-      font-size:14px;
+      font-size:13px;
       line-height:1.5;
     }
 
     .status{
       display:inline-flex;
-      width:max-content;
-      max-width:100%;
       padding:8px 10px;
       border-radius:999px;
       font-size:12px;
@@ -329,10 +356,10 @@
     .complaint-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:14px;
+      gap:12px;
     }
 
-    .complaint-item{
+    .info-box{
       border:1px solid var(--border);
       border-radius:14px;
       padding:14px;
@@ -342,76 +369,32 @@
       line-height:1.6;
     }
 
-    .complaint-item strong{
+    .info-box strong{
       display:block;
       color:var(--text);
-      margin-bottom:8px;
+      margin-bottom:6px;
       font-size:13px;
-      text-transform:uppercase;
-      letter-spacing:.04em;
-    }
-
-    .complaint-item b{
-      color:var(--text);
-    }
-
-    .organizer-comment{
-      background:#fff;
-    }
-
-    .admin-comment{
-      border-color:#f6cf99;
-      background:#fff8ef;
-    }
-
-    .meta-row{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:12px;
-    }
-
-    .meta-item{
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:12px;
-      background:#fff;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.5;
-    }
-
-    .meta-item strong{
-      display:block;
-      color:var(--text);
-      margin-bottom:5px;
-      font-size:12px;
       text-transform:uppercase;
       letter-spacing:.04em;
     }
 
     .actions-row{
       display:flex;
+      justify-content:flex-end;
       gap:10px;
       flex-wrap:wrap;
-      justify-content:flex-end;
+    }
+
+    .review-complaint-card{
+      padding:16px;
+      display:grid;
+      gap:14px;
     }
 
     @media (max-width:1080px){
-      .main{
-        grid-template-columns:1fr;
-      }
-
-      .sidebar{
-        position:static;
-      }
-
-      .toolbar{
-        grid-template-columns:1fr;
-      }
-
-      .complaint-grid{
-        grid-template-columns:1fr;
-      }
+      .main{grid-template-columns:1fr}
+      .sidebar{position:static}
+      .complaint-grid{grid-template-columns:1fr}
     }
 
     @media (max-width:760px){
@@ -431,11 +414,13 @@
         padding:18px;
       }
 
+      .type-toggle,
       .actions-row{
         flex-direction:column;
         align-items:stretch;
       }
 
+      .type-label,
       .btn{
         width:100%;
       }
@@ -450,13 +435,13 @@
       </div>
 
       <nav class="nav">
-        <a href="#">Главная</a>
-        <a href="#">Каталог</a>
-        <a href="#">Документы</a>
+        <a href="index.html">Главная</a>
+        <a href="catalog.html">Каталог</a>
+        <a href="legal-documents.html">Документы</a>
       </nav>
 
       <div class="actions">
-        <a class="btn btn-primary" href="#">Личный кабинет</a>
+        <a class="btn btn-primary" href="admin-cabinet.html">Личный кабинет</a>
       </div>
     </div>
   </header>
@@ -471,16 +456,15 @@
         <h2>Разделы</h2>
 
         <div class="menu">
-          <a class="menu-item active" href="#">
+          <a class="menu-item active" href="admin-cabinet.html">
             <div>Жалобы</div>
-            <span class="counter">3</span>
           </a>
 
-          <a class="menu-item" href="#">
+          <a class="menu-item" href="admin-organizer.html">
             <div>Организаторы</div>
           </a>
 
-          <a class="menu-item" href="#">
+          <a class="menu-item" href="admin-users.html">
             <div>Пользователи</div>
           </a>
         </div>
@@ -493,143 +477,114 @@
           </div>
         </div>
 
-        <div class="toolbar">
-          <div class="field">
-            <label for="complaint-search">Поиск</label>
-            <input id="complaint-search" type="text" placeholder="Название мероприятия или организатор" />
+        <input class="type-toggle-input" type="radio" name="complaints-type" id="complaints-events" checked />
+        <input class="type-toggle-input" type="radio" name="complaints-type" id="complaints-reviews" />
+
+        <div class="filter-panel">
+          <div class="type-toggle">
+            <label class="type-label" for="complaints-events">Жалобы на карточки мероприятий</label>
+            <label class="type-label" for="complaints-reviews">Жалобы на отзывы</label>
           </div>
 
-          <div class="field">
-            <label for="complaint-status">Статус карточки</label>
-            <select id="complaint-status">
+          <div class="status-filter event-status-controls">
+            <label for="card-status-filter">Статус карточки</label>
+            <select id="card-status-filter">
               <option>Все статусы</option>
               <option>Заблокирована</option>
               <option>На рассмотрении администратора</option>
             </select>
           </div>
-
-          <button class="btn btn-primary" type="button">Найти</button>
         </div>
 
-        <div class="complaints-list">
+        <div class="event-complaints">
           <article class="complaint-card">
             <div class="complaint-head">
               <div class="complaint-title">
-                <h3>K-pop Night</h3>
-                <span>Организатор: K-pop Events Team</span>
+                <h3>Жалоба на мероприятие «K-pop Night»</h3>
+                <span>Последнее изменение: 18 апреля 2026 · 14:30</span>
               </div>
 
               <span class="status review">На рассмотрении администратора</span>
             </div>
 
             <div class="complaint-grid">
-              <div class="complaint-item">
+              <div class="info-box">
                 <strong>Жалоба пользователя</strong>
-                <div>
-                  <b>Тип жалобы:</b> Недостоверная информация
-                </div>
+                <div><b>Тип жалобы:</b> Недостоверная информация</div>
                 <div>
                   На карточке были некорректно прописаны дата начала и возрастное ограничение.
                   Пользователь также указал, что описание мероприятия не совпадает с фактической программой.
                 </div>
               </div>
 
-              <div class="complaint-item organizer-comment">
+              <div class="info-box">
                 <strong>Комментарий организатора</strong>
                 Информация о дате и возрастном ограничении была уточнена, описание программы исправлено,
                 данные на карточке приведены в соответствие с фактическими условиями проведения.
               </div>
             </div>
 
-            <div class="meta-row">
-              <div class="meta-item">
-                <strong>Последнее изменение</strong>
-                18.04.2026 13:40 — организатор отправил исправления на проверку
-              </div>
-            </div>
-
             <div class="actions-row">
-              <a class="btn btn-outline" href="#">Перейти к карточке</a>
+              <a class="btn btn-outline" href="event-admin.html">Перейти к карточке</a>
             </div>
           </article>
 
           <article class="complaint-card">
             <div class="complaint-head">
               <div class="complaint-title">
-                <h3>Cosplay Showcase</h3>
-                <span>Организатор: Cosplay Community Kazan</span>
+                <h3>Жалоба на мероприятие «Cosplay Showcase»</h3>
+                <span>Последнее изменение: 17 апреля 2026 · 11:10</span>
               </div>
 
               <span class="status blocked">Заблокирована</span>
             </div>
 
             <div class="complaint-grid">
-              <div class="complaint-item">
+              <div class="info-box">
                 <strong>Жалоба пользователя</strong>
+                <div><b>Тип жалобы:</b> Мошенничество или подозрительная регистрация</div>
                 <div>
-                  <b>Тип жалобы:</b> Мошенничество или подозрительная регистрация
-                </div>
-                <div>
-                  Пользователь указал, что внешняя ссылка регистрации ведет на подозрительный ресурс,
-                  а стоимость участия отличается от информации, указанной в карточке мероприятия.
+                  Пользователь указал, что внешняя ссылка на регистрацию ведет на подозрительный ресурс,
+                  а стоимость участия отличается от информации на карточке мероприятия.
                 </div>
               </div>
 
-              <div class="complaint-item admin-comment">
+              <div class="info-box">
                 <strong>Комментарий администратора</strong>
-                Комментарий пока не добавлен. Карточка ожидает реакции организатора или решения администратора.
-              </div>
-            </div>
-
-            <div class="meta-row">
-              <div class="meta-item">
-                <strong>Последнее изменение</strong>
-                18.04.2026 11:10 — поступила жалоба, карточка автоматически заблокирована
+                Исправления пока не поступили. Карточка остается заблокированной до проверки организатором.
               </div>
             </div>
 
             <div class="actions-row">
-              <a class="btn btn-outline" href="#">Перейти к карточке</a>
+              <a class="btn btn-outline" href="event-admin.html">Перейти к карточке</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="review-complaints">
+          <article class="review-complaint-card">
+            <div class="review-complaint-head">
+              <div class="review-complaint-title">
+                <h3>Жалоба на отзыв к мероприятию «K-pop Spring Meetup»</h3>
+                <span>Дата жалобы: 19 апреля 2026 · 10:45</span>
+              </div>
+            </div>
+
+            <div class="actions-row">
+              <a class="btn btn-outline" href="event-past-admin.html#reported-review">Перейти к отзыву</a>
             </div>
           </article>
 
-          <article class="complaint-card">
-            <div class="complaint-head">
-              <div class="complaint-title">
-                <h3>Anime Fan Meetup</h3>
-                <span>Организатор: Anime Club Moscow</span>
-              </div>
-
-              <span class="status blocked">Заблокирована</span>
-            </div>
-
-            <div class="complaint-grid">
-              <div class="complaint-item">
-                <strong>Жалоба пользователя</strong>
-                <div>
-                  <b>Тип жалобы:</b> Запрещенный или оскорбительный контент
-                </div>
-                <div>
-                  В описании мероприятия были указаны материалы и формулировки, которые пользователь
-                  считает недопустимыми для публикации в каталоге.
-                </div>
-              </div>
-
-              <div class="complaint-item admin-comment">
-                <strong>Комментарий администратора</strong>
-                Первичная проверка не выполнена. Карточка скрыта из каталога до принятия решения.
-              </div>
-            </div>
-
-            <div class="meta-row">
-              <div class="meta-item">
-                <strong>Последнее изменение</strong>
-                18.04.2026 12:35 — поступила жалоба, карточка автоматически заблокирована
+          <article class="review-complaint-card">
+            <div class="review-complaint-head">
+              <div class="review-complaint-title">
+                <h3>Жалоба на отзыв к мероприятию «Dance Practice Day»</h3>
+                <span>Дата жалобы: 18 апреля 2026 · 16:20</span>
               </div>
             </div>
 
             <div class="actions-row">
-              <a class="btn btn-outline" href="#">Перейти к карточке</a>
+              <a class="btn btn-outline" href="event-past-admin.html#reported-review">Перейти к отзыву</a>
             </div>
           </article>
         </div>
