@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PopCulture Events — Участники мероприятия</title>
+  <style>
+    :root{
+      --surface:#ffffff;
+      --border:#d7deea;
+      --text:#172033;
+      --muted:#667085;
+      --primary:#4f46e5;
+      --primary-dark:#4338ca;
+      --primary-soft:#e0e7ff;
+      --shadow:0 10px 30px rgba(17,24,39,.08);
+      --radius:18px;
+      --success:#12b76a;
+      --danger:#f04438;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,#eef2ff 0%,#f4f6fb 100%);
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .header{
+      background:rgba(255,255,255,.92);
+      border-bottom:1px solid var(--border);
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter:blur(10px);
+    }
+
+    .header-inner{
+      max-width:1280px;
+      margin:0 auto;
+      padding:18px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:700;
+      font-size:20px;
+    }
+
+    .nav{
+      display:flex;
+      gap:18px;
+      color:var(--muted);
+      font-size:14px;
+      flex-wrap:wrap;
+    }
+
+    .nav a:hover{
+      color:var(--primary);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+      padding:0 16px;
+      border-radius:12px;
+      border:1px solid transparent;
+      font-weight:700;
+      font-size:14px;
+      cursor:pointer;
+      font-family:inherit;
+      text-align:center;
+      white-space:nowrap;
+    }
+
+    .btn-outline{
+      background:#fff;
+      border-color:var(--border);
+      color:var(--text);
+    }
+
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 8px 20px rgba(79,70,229,.24);
+    }
+
+    .btn-success{
+      background:#fff;
+      color:var(--success);
+      border-color:#a9e7c7;
+    }
+
+    .btn-danger{
+      background:#fff;
+      color:var(--danger);
+      border-color:#f4b4b0;
+    }
+
+    .page{
+      max-width:1280px;
+      margin:0 auto;
+      padding:24px;
+      display:grid;
+      gap:20px;
+    }
+
+    .title-box{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:24px;
+    }
+
+    .title-box h1{
+      margin:0;
+      font-size:30px;
+    }
+
+    .main{
+      display:grid;
+      grid-template-columns:280px 1fr;
+      gap:20px;
+      align-items:start;
+    }
+
+    .sidebar,
+    .content{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .sidebar{
+      padding:20px;
+      display:grid;
+      gap:10px;
+      align-self:start;
+      position:sticky;
+      top:96px;
+    }
+
+    .sidebar h2{
+      margin:0 0 6px;
+      font-size:18px;
+    }
+
+    .menu{
+      display:grid;
+      gap:10px;
+    }
+
+    .menu-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 16px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:#fff;
+      font-weight:700;
+      font-size:14px;
+      color:var(--text);
+    }
+
+    .menu-item.active{
+      border-color:#cfd8ff;
+      background:var(--primary-soft);
+      color:var(--primary-dark);
+    }
+
+    .content{
+      padding:20px;
+      display:grid;
+      gap:16px;
+      min-width:0;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .section-head h2{
+      margin:0;
+      font-size:22px;
+    }
+
+    .table-card{
+      border:1px solid var(--border);
+      border-radius:16px;
+      background:#fff;
+      overflow:hidden;
+      display:grid;
+      gap:0;
+    }
+
+    .table-scroll{
+      width:100%;
+      max-height:520px;
+      overflow:auto;
+    }
+
+    table{
+      width:100%;
+      min-width:1040px;
+      border-collapse:collapse;
+      font-size:14px;
+    }
+
+    thead th{
+      position:sticky;
+      top:0;
+      z-index:2;
+      background:#f8faff;
+      color:var(--text);
+      text-align:left;
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      border-bottom:1px solid var(--border);
+      padding:14px 12px;
+      white-space:nowrap;
+    }
+
+    tbody td{
+      border-bottom:1px solid var(--border);
+      padding:12px;
+      color:var(--muted);
+      vertical-align:top;
+      line-height:1.5;
+    }
+
+    tbody tr:last-child td{
+      border-bottom:0;
+    }
+
+    tbody tr:hover{
+      background:#fbfcff;
+    }
+
+    .number-cell{
+      color:var(--text);
+      font-weight:700;
+      width:64px;
+    }
+
+    .participant-name{
+      color:var(--text);
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    .table-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:nowrap;
+    }
+
+    .table-actions .btn{
+      min-height:36px;
+      padding:0 12px;
+      font-size:13px;
+    }
+
+    @media (max-width:1080px){
+      .main{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:static;
+      }
+    }
+
+    @media (max-width:760px){
+      .header-inner,
+      .page{
+        padding-left:16px;
+        padding-right:16px;
+      }
+
+      .nav,
+      .actions{
+        justify-content:flex-start;
+      }
+
+      .content,
+      .sidebar{
+        padding:18px;
+      }
+
+      .section-head{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .section-head .btn{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <div>PopCulture Events</div>
+      </div>
+
+      <nav class="nav">
+        <a href="#">Главная</a>
+        <a href="#">Каталог</a>
+        <a href="#">Документы</a>
+      </nav>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="#">Личный кабинет</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="title-box">
+      <h1>Личный кабинет организатора</h1>
+    </section>
+
+    <section class="main">
+      <aside class="sidebar">
+        <h2>Разделы</h2>
+
+        <div class="menu">
+          <a class="menu-item" href="#">
+            <div>Профиль</div>
+          </a>
+
+          <a class="menu-item active" href="#">
+            <div>Мои мероприятия</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Мои регистрации</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Избранное</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Уведомления</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Архив мероприятий</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Архив регистраций</div>
+          </a>
+        </div>
+      </aside>
+
+      <section class="content">
+        <div class="section-head">
+          <div>
+            <h2>Участники мероприятия</h2>
+          </div>
+
+          <button class="btn btn-primary" type="button">Выгрузить в Excel</button>
+        </div>
+
+        <div class="table-card">
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>№</th>
+                  <th>Имя</th>
+                  <th>Фамилия</th>
+                  <th>Электронная почта</th>
+                  <th>Телефон</th>
+                  <th>Комментарий</th>
+                  <th>Дата заявки</th>
+                  <th>Действия</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td class="number-cell">1</td>
+                  <td class="participant-name">Иван</td>
+                  <td>Иванов</td>
+                  <td>ivan@example.com</td>
+                  <td>+7 900 111-22-33</td>
+                  <td>Планирую участвовать в танцевальной части программы.</td>
+                  <td>12.04.2026 14:20</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="btn btn-danger" type="button">Отклонить</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="number-cell">2</td>
+                  <td class="participant-name">Анна</td>
+                  <td>Петрова</td>
+                  <td>anna@example.com</td>
+                  <td>+7 901 222-33-44</td>
+                  <td>Буду присутствовать как зритель.</td>
+                  <td>12.04.2026 16:05</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="btn btn-danger" type="button">Отклонить</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="number-cell">3</td>
+                  <td class="participant-name">Мария</td>
+                  <td>Соколова</td>
+                  <td>maria@example.com</td>
+                  <td>+7 902 333-44-55</td>
+                  <td>Нужна информация по времени входа для участников выступления.</td>
+                  <td>13.04.2026 09:45</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="btn btn-danger" type="button">Отклонить</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="number-cell">4</td>
+                  <td class="participant-name">Дмитрий</td>
+                  <td>Кузнецов</td>
+                  <td>dmitry@example.com</td>
+                  <td>+7 903 444-55-66</td>
+                  <td>Комментарий отсутствует.</td>
+                  <td>13.04.2026 11:10</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="btn btn-success" type="button">Подтвердить</button>
+                      <button class="btn btn-danger" type="button">Отклонить</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="number-cell">5</td>
+                  <td class="participant-name">Екатерина</td>
+                  <td>Морозова</td>
+                  <td>ekaterina@example.com</td>
+                  <td>+7 904 555-66-77</td>
+                  <td>Планирую прийти с командой, заявку подаю только за себя.</td>
+                  <td>13.04.2026 13:30</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="btn btn-success" type="button">Подтвердить</button>
+                      <button class="btn btn-danger" type="button">Отклонить</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="number-cell">6</td>
+                  <td class="participant-name">Алексей</td>
+                  <td>Новиков</td>
+                  <td>alexey@example.com</td>
+                  <td>+7 905 666-77-88</td>
+                  <td>Буду участвовать в конкурсе каверов.</td>
+                  <td>14.04.2026 10:15</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="btn btn-success" type="button">Подтвердить</button>
+                      <button class="btn btn-danger" type="button">Отклонить</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="number-cell">7</td>
+                  <td class="participant-name">Ольга</td>
+                  <td>Волкова</td>
+                  <td>olga@example.com</td>
+                  <td>+7 906 777-88-99</td>
+                  <td>Комментарий отсутствует.</td>
+                  <td>14.04.2026 12:50</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="btn btn-success" type="button">Подтвердить</button>
+                      <button class="btn btn-danger" type="button">Отклонить</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="number-cell">8</td>
+                  <td class="participant-name">Никита</td>
+                  <td>Федоров</td>
+                  <td>nikita@example.com</td>
+                  <td>+7 907 888-99-00</td>
+                  <td>Планирую прийти к началу основной программы.</td>
+                  <td>15.04.2026 09:05</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="btn btn-success" type="button">Подтвердить</button>
+                      <button class="btn btn-danger" type="button">Отклонить</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="number-cell">9</td>
+                  <td class="participant-name">Полина</td>
+                  <td>Орлова</td>
+                  <td>polina@example.com</td>
+                  <td>+7 908 999-00-11</td>
+                  <td>Комментарий отсутствует.</td>
+                  <td>15.04.2026 15:40</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="btn btn-success" type="button">Подтвердить</button>
+                      <button class="btn btn-danger" type="button">Отклонить</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="number-cell">10</td>
+                  <td class="participant-name">Сергей</td>
+                  <td>Смирнов</td>
+                  <td>sergey@example.com</td>
+                  <td>+7 909 000-11-22</td>
+                  <td>Нужна информация о правилах допуска на площадку.</td>
+                  <td>16.04.2026 18:25</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="btn btn-success" type="button">Подтвердить</button>
+                      <button class="btn btn-danger" type="button">Отклонить</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

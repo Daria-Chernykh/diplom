@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PopCulture Events — Редактирование мероприятия</title>
+  <style>
+    :root{
+      --surface:#ffffff;
+      --border:#d7deea;
+      --text:#172033;
+      --muted:#667085;
+      --primary:#4f46e5;
+      --primary-dark:#4338ca;
+      --primary-soft:#e0e7ff;
+      --shadow:0 10px 30px rgba(17,24,39,.08);
+      --radius:18px;
+      --success:#12b76a;
+      --warning:#f79009;
+      --danger:#f04438;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,#eef2ff 0%,#f4f6fb 100%);
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .header{
+      background:rgba(255,255,255,.92);
+      border-bottom:1px solid var(--border);
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter:blur(10px);
+    }
+
+    .header-inner{
+      max-width:1280px;
+      margin:0 auto;
+      padding:18px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:700;
+      font-size:20px;
+    }
+
+    .nav{
+      display:flex;
+      gap:18px;
+      color:var(--muted);
+      font-size:14px;
+      flex-wrap:wrap;
+    }
+
+    .nav a:hover{
+      color:var(--primary);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+      padding:0 16px;
+      border-radius:12px;
+      border:1px solid transparent;
+      font-weight:700;
+      font-size:14px;
+      cursor:pointer;
+      font-family:inherit;
+      text-align:center;
+    }
+
+    .btn-outline{
+      background:#fff;
+      border-color:var(--border);
+      color:var(--text);
+    }
+
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 8px 20px rgba(79,70,229,.24);
+    }
+
+    .btn-danger{
+      background:#fff;
+      color:var(--danger);
+      border-color:#f4b4b0;
+    }
+
+    .page{
+      max-width:1280px;
+      margin:0 auto;
+      padding:24px;
+      display:grid;
+      gap:20px;
+    }
+
+    .title-box{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:24px;
+    }
+
+    .title-box h1{
+      margin:0;
+      font-size:30px;
+    }
+
+    .main{
+      display:grid;
+      grid-template-columns:280px 1fr;
+      gap:20px;
+      align-items:start;
+    }
+
+    .sidebar,
+    .content,
+    .form-section,
+    .complaints-section{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .sidebar{
+      padding:20px;
+      display:grid;
+      gap:10px;
+      align-self:start;
+      position:sticky;
+      top:96px;
+    }
+
+    .sidebar h2{
+      margin:0 0 6px;
+      font-size:18px;
+    }
+
+    .menu{
+      display:grid;
+      gap:10px;
+    }
+
+    .menu-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 16px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:#fff;
+      font-weight:700;
+      font-size:14px;
+      color:var(--text);
+    }
+
+    .menu-item.active{
+      border-color:#cfd8ff;
+      background:var(--primary-soft);
+      color:var(--primary-dark);
+    }
+
+    .content{
+      padding:20px;
+      display:grid;
+      gap:16px;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+    }
+
+    .section-head h2{
+      margin:0;
+      font-size:22px;
+    }
+
+    .form{
+      display:grid;
+      gap:16px;
+    }
+
+    .form-section{
+      box-shadow:none;
+      padding:18px;
+      display:grid;
+      gap:16px;
+    }
+
+    .form-section h3{
+      margin:0;
+      font-size:20px;
+    }
+
+    .complaints-section{
+      box-shadow:none;
+      padding:18px;
+      display:grid;
+      gap:16px;
+    }
+
+    .complaints-section h3{
+      margin:0;
+      font-size:20px;
+    }
+
+    .complaint-status{
+      display:inline-flex;
+      width:max-content;
+      max-width:100%;
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(240,68,56,.12);
+      color:var(--danger);
+      font-size:12px;
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    .complaint-list{
+      display:grid;
+      gap:14px;
+    }
+
+    .complaint-item{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px;
+      background:#f8faff;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .complaint-item strong{
+      display:block;
+      color:var(--text);
+      margin-bottom:8px;
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+
+    .complaint-item b{
+      color:var(--text);
+    }
+
+    .admin-comment{
+      border-color:#f6cf99;
+      background:#fff8ef;
+    }
+
+    .organizer-comment-box{
+      border:1px solid var(--border);
+      border-radius:16px;
+      background:#fff;
+      padding:16px;
+      display:grid;
+      gap:12px;
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    .field label{
+      display:block;
+      margin-bottom:8px;
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .field input,
+    .field textarea,
+    .field select{
+      width:100%;
+      min-height:48px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:0 14px;
+      font-size:14px;
+      outline:none;
+      background:#fff;
+      font-family:inherit;
+      color:var(--text);
+    }
+
+    .field textarea{
+      min-height:120px;
+      padding:12px 14px;
+      resize:vertical;
+      line-height:1.6;
+    }
+
+    .field select{
+      appearance:none;
+      background:
+        linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+        linear-gradient(135deg, var(--muted) 50%, transparent 50%),
+        #fff;
+      background-position:
+        calc(100% - 18px) 21px,
+        calc(100% - 13px) 21px,
+        0 0;
+      background-size:
+        5px 5px,
+        5px 5px,
+        100% 100%;
+      background-repeat:no-repeat;
+      padding-right:38px;
+    }
+
+    .disabled-field{
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:#f8faff;
+      padding:14px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .disabled-field strong{
+      color:var(--text);
+    }
+
+    .choice-group{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .choice-label{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:44px;
+      padding:0 16px;
+      border-radius:12px;
+      border:1px solid #cfd8ff;
+      background:var(--primary-soft);
+      color:var(--primary-dark);
+      font-weight:700;
+      font-size:14px;
+    }
+
+    .choice-label::before{
+      content:"";
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      border:2px solid var(--primary);
+      background:
+        radial-gradient(circle, var(--primary) 0 42%, transparent 46%),
+        #fff;
+    }
+
+    .tags-box{
+      display:grid;
+      gap:12px;
+    }
+
+    .tag-input-row{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:10px;
+      align-items:end;
+    }
+
+    .tag-input-row .btn{
+      min-height:48px;
+      height:48px;
+      padding:0 18px;
+    }
+
+    .tags-list{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:var(--primary-dark);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .tag button{
+      border:0;
+      background:transparent;
+      color:var(--primary-dark);
+      cursor:pointer;
+      font-weight:700;
+      padding:0;
+      font-size:14px;
+    }
+
+    .registration-info{
+      border:1px solid var(--border);
+      border-radius:16px;
+      background:#f8faff;
+      padding:16px;
+      display:grid;
+      gap:12px;
+    }
+
+    .registration-info h4{
+      margin:0;
+      font-size:18px;
+    }
+
+    .note{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px;
+      background:#fff;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+    }
+
+    .form-fields-list{
+      display:grid;
+      gap:10px;
+    }
+
+    .form-field-preview{
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:#fff;
+      padding:14px;
+      display:grid;
+      grid-template-columns:1fr 180px;
+      gap:12px;
+      align-items:center;
+    }
+
+    .preview-title{
+      display:grid;
+      gap:4px;
+    }
+
+    .preview-title strong{
+      font-size:14px;
+    }
+
+    .preview-title span{
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .field-type{
+      color:var(--muted);
+      font-size:13px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      padding:8px 10px;
+      background:#f8faff;
+      text-align:center;
+    }
+
+    .form-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:4px;
+    }
+
+
+    .legal-check{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .legal-check input{
+      margin-top:2px;
+      accent-color:var(--primary);
+    }
+
+    .legal-check a,
+    .check a,
+    .complaint-note a,
+    .review-note a{
+      color:var(--primary-dark);
+      font-weight:700;
+      text-decoration:underline;
+      text-underline-offset:2px;
+    }
+
+    @media (max-width:1080px){
+      .main{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:static;
+      }
+
+      .tag-input-row{
+        grid-template-columns:1fr;
+      }
+
+      .tag-input-row .btn{
+        width:100%;
+      }
+
+      .form-field-preview{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:760px){
+      .header-inner,
+      .page{
+        padding-left:16px;
+        padding-right:16px;
+      }
+
+      .nav,
+      .actions{
+        justify-content:flex-start;
+      }
+
+      .content,
+      .sidebar{
+        padding:18px;
+      }
+
+      .row{
+        grid-template-columns:1fr;
+      }
+
+      .choice-group,
+      .form-actions{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .choice-label,
+      .btn{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <div>PopCulture Events</div>
+      </div>
+
+      <nav class="nav">
+        <a href="#">Главная</a>
+        <a href="#">Каталог</a>
+        <a href="#">Документы</a>
+      </nav>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="#">Личный кабинет</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="title-box">
+      <h1>Личный кабинет организатора</h1>
+    </section>
+
+    <section class="main">
+      <aside class="sidebar">
+        <h2>Разделы</h2>
+
+        <div class="menu">
+          <a class="menu-item" href="#">
+            <div>Профиль</div>
+          </a>
+
+          <a class="menu-item active" href="#">
+            <div>Мои мероприятия</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Мои регистрации</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Избранное</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Уведомления</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Архив мероприятий</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Архив регистраций</div>
+          </a>
+        </div>
+      </aside>
+
+      <section class="content">
+        <div class="section-head">
+          <div>
+            <h2>Редактирование мероприятия</h2>
+          </div>
+        </div>
+
+        <form class="form">
+          <section class="complaints-section">
+            <h3>Текущая жалоба</h3>
+
+            <div class="complaint-list">
+              <div class="complaint-item">
+                <strong>Жалоба пользователя</strong>
+                <div>
+                  <b>Тип жалобы:</b> Недостоверная информация
+                </div>
+                <div>
+                  На карточке были некорректно прописаны дата начала и возрастное ограничение.
+                  Пользователь также указал, что описание мероприятия не совпадает с фактической программой.
+                </div>
+              </div>
+
+              <div class="complaint-item admin-comment">
+                <strong>Комментарий администратора</strong>
+                Исправления не приняты. Карточка остается заблокированной. Необходимо повторно проверить
+                стоимость участия, условия входа и текст описания мероприятия.
+              </div>
+            </div>
+
+            <div class="organizer-comment-box">
+              <div class="field">
+                <label for="organizer-complaint-comment">Комментарий организатора для администратора</label>
+                <textarea id="organizer-complaint-comment" placeholder="Опишите, какие изменения были внесены и как была исправлена проблема">Дата, стоимость участия, расписание и требования к участникам были уточнены. Информация на карточке приведена в соответствие с фактическими условиями проведения мероприятия.</textarea>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h3>Основная информация</h3>
+
+            <div class="field">
+              <label for="event-title">Название</label>
+              <input id="event-title" type="text" value="K-pop Night" />
+            </div>
+
+            <div class="field">
+              <label for="short-description">Краткое описание</label>
+              <textarea id="short-description">Танцевальное мероприятие для поклонников k-pop с конкурсами, сценическими выступлениями и призами.</textarea>
+            </div>
+
+            <div class="field">
+              <label for="long-description">Расширенное описание</label>
+              <textarea id="long-description">В программе мероприятия предусмотрены танцевальные активности, выступления участников, тематические конкурсы, фотозона и свободное общение между гостями. Организатор может дополнительно указать условия участия, особенности площадки, правила допуска, требования к участникам, ограничения по возрасту и другую информацию, которая помогает пользователю принять решение о регистрации.</textarea>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h3>Дата, формат и место проведения</h3>
+
+            <div class="field">
+              <label for="event-date">Дата и время</label>
+              <input id="event-date" type="datetime-local" value="2026-04-20T18:00" />
+            </div>
+
+            <div>
+              <label style="display:block;margin-bottom:8px;font-size:14px;font-weight:700;">Формат мероприятия</label>
+              <div class="choice-group">
+                <div class="choice-label">Офлайн</div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="event-place">Место проведения</label>
+              <input id="event-place" type="text" value="Концертная площадка, Москва, ул. Примерная, 12" />
+            </div>
+
+            <div class="field">
+              <label for="event-schedule">Расписание</label>
+              <textarea id="event-schedule">18:00 — открытие входа
+19:00 — начало программы
+21:00 — конкурс и награждение
+22:00 — завершение мероприятия</textarea>
+            </div>
+
+            <div class="field">
+              <label for="participant-requirements">Требования к участникам</label>
+              <textarea id="participant-requirements">Возраст участников — 16+. Для входа необходимо заранее пройти регистрацию. Участникам конкурсной программы необходимо прибыть на площадку не позднее чем за 30 минут до начала выступлений.</textarea>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h3>Теги</h3>
+
+            <div class="tags-box">
+              <div class="tag-input-row">
+                <div class="field">
+                  <label for="event-tag">Добавить тег</label>
+                  <input id="event-tag" type="text" list="tags-list" placeholder="Выберите тег из списка или введите свой" />
+                  <datalist id="tags-list">
+                    <option value="Anime"></option>
+                    <option value="K-pop"></option>
+                    <option value="Cosplay"></option>
+                    <option value="Dance"></option>
+                    <option value="Free"></option>
+                    <option value="Meetup"></option>
+                    <option value="Festival"></option>
+                    <option value="Concert"></option>
+                    <option value="Online"></option>
+                    <option value="Offline"></option>
+                    <option value="Workshop"></option>
+                    <option value="Random Dance"></option>
+                    <option value="Cover Dance"></option>
+                    <option value="Fan Meeting"></option>
+                  </datalist>
+                </div>
+
+                <button class="btn btn-outline" type="button">Добавить тег</button>
+              </div>
+
+              <div class="tags-list">
+                <span class="tag">K-pop <button type="button">×</button></span>
+                <span class="tag">Dance <button type="button">×</button></span>
+                <span class="tag">Offline <button type="button">×</button></span>
+                <span class="tag">Free <button type="button">×</button></span>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h3>Регистрация</h3>
+
+            <div class="registration-info">
+              <h4>Внутренняя регистрация</h4>
+
+              <div class="note">
+                Тип регистрации, ссылка внешней регистрации и структура регистрационной формы не изменяются на странице редактирования мероприятия. Эти параметры были заданы при создании карточки.
+              </div>
+
+              <div class="form-fields-list">
+                <div class="form-field-preview">
+                  <div class="preview-title">
+                    <strong>Имя</strong>
+                    <span>Обязательное поле</span>
+                  </div>
+                  <div class="field-type">Текстовое поле</div>
+                </div>
+
+                <div class="form-field-preview">
+                  <div class="preview-title">
+                    <strong>Электронная почта</strong>
+                    <span>Обязательное поле</span>
+                  </div>
+                  <div class="field-type">Электронная почта</div>
+                </div>
+
+                <div class="form-field-preview">
+                  <div class="preview-title">
+                    <strong>Телефон</strong>
+                    <span>Обязательное поле</span>
+                  </div>
+                  <div class="field-type">Телефон</div>
+                </div>
+
+                <div class="form-field-preview">
+                  <div class="preview-title">
+                    <strong>Комментарий</strong>
+                    <span>Необязательное поле</span>
+                  </div>
+                  <div class="field-type">Многострочный текст</div>
+                </div>
+              </div>
+
+              <div class="disabled-field">
+                <strong>Подтверждение регистрации:</strong><br />
+                Регистрация с подтверждением организатором
+              </div>
+            </div>
+          </section>
+
+          <label class="legal-check">
+            <input type="checkbox" />
+            <span>Я подтверждаю, что внесенные изменения достоверны, не нарушают права третьих лиц и соответствуют <a href="#" target="_blank" rel="noopener noreferrer">Пользовательскому соглашению</a>.</span>
+          </label>
+
+          <div class="form-actions">
+            <a class="btn btn-outline" href="#">Отмена</a>
+            <button class="btn btn-primary" type="button">Сохранить изменения</button>
+          </div>
+        </form>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

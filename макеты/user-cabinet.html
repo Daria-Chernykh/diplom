@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PopCulture Events — Профиль пользователя</title>
+  <style>
+    :root{
+      --surface:#ffffff;
+      --border:#d7deea;
+      --text:#172033;
+      --muted:#667085;
+      --primary:#4f46e5;
+      --primary-dark:#4338ca;
+      --primary-soft:#e0e7ff;
+      --shadow:0 10px 30px rgba(17,24,39,.08);
+      --radius:18px;
+      --success:#12b76a;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,#eef2ff 0%,#f4f6fb 100%);
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .header{
+      background:rgba(255,255,255,.92);
+      border-bottom:1px solid var(--border);
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter:blur(10px);
+    }
+
+    .header-inner{
+      max-width:1280px;
+      margin:0 auto;
+      padding:18px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:700;
+      font-size:20px;
+    }
+
+    .nav{
+      display:flex;
+      gap:18px;
+      color:var(--muted);
+      font-size:14px;
+      flex-wrap:wrap;
+    }
+
+    .nav a:hover{
+      color:var(--primary);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+      padding:0 16px;
+      border-radius:12px;
+      border:1px solid transparent;
+      font-weight:700;
+      font-size:14px;
+      cursor:pointer;
+      font-family:inherit;
+    }
+
+    .btn-outline{
+      background:#fff;
+      border-color:var(--border);
+      color:var(--text);
+    }
+
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 8px 20px rgba(79,70,229,.24);
+    }
+
+    .page{
+      max-width:1280px;
+      margin:0 auto;
+      padding:24px;
+      display:grid;
+      gap:20px;
+    }
+
+    .title-box{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:24px;
+    }
+
+    .title-box h1{
+      margin:0;
+      font-size:30px;
+    }
+
+    .main{
+      display:grid;
+      grid-template-columns:280px 1fr;
+      gap:20px;
+      align-items:start;
+    }
+
+    .sidebar,
+    .content{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .sidebar{
+      padding:20px;
+      display:grid;
+      gap:10px;
+      align-self:start;
+      position:sticky;
+      top:96px;
+    }
+
+    .sidebar h2{
+      margin:0 0 6px;
+      font-size:18px;
+    }
+
+    .menu{
+      display:grid;
+      gap:10px;
+    }
+
+    .menu-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 16px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:#fff;
+      font-weight:700;
+      font-size:14px;
+      color:var(--text);
+    }
+
+    .menu-item.active{
+      border-color:#cfd8ff;
+      background:var(--primary-soft);
+      color:var(--primary-dark);
+    }
+
+    .content{
+      padding:20px;
+      display:grid;
+      gap:16px;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+    }
+
+    .section-head h2{
+      margin:0;
+      font-size:22px;
+    }
+
+    .profile-card{
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:18px;
+      background:#fff;
+    }
+
+    .form{
+      display:grid;
+      gap:14px;
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    .field label{
+      display:block;
+      margin-bottom:8px;
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .field input,
+    .field select,
+    .field textarea{
+      width:100%;
+      min-height:48px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:0 14px;
+      font-size:14px;
+      outline:none;
+      background:#fff;
+      font-family:inherit;
+    }
+
+    .field textarea{
+      min-height:110px;
+      padding:12px 14px;
+      resize:vertical;
+    }
+
+    .form-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:4px;
+    }
+
+    @media (max-width:1080px){
+      .main{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:static;
+      }
+    }
+
+    @media (max-width:720px){
+      .header-inner,
+      .page{
+        padding-left:16px;
+        padding-right:16px;
+      }
+
+      .nav,
+      .actions{
+        justify-content:flex-start;
+      }
+
+      .content,
+      .sidebar{
+        padding:18px;
+      }
+
+      .row{
+        grid-template-columns:1fr;
+      }
+
+      .form-actions{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .btn{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <div>PopCulture Events</div>
+      </div>
+      <nav class="nav">
+        <a href="#">Главная</a>
+        <a href="#">Каталог</a>
+        <a href="#">Документы</a>
+      </nav>
+      <div class="actions">
+        <a class="btn btn-primary" href="#">Личный кабинет</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="title-box">
+      <h1>Личный кабинет пользователя</h1>
+    </section>
+
+    <section class="main">
+      <aside class="sidebar">
+        <h2>Разделы</h2>
+        <div class="menu">
+          <a class="menu-item active" href="#">
+            <div>Профиль</div>
+          </a>
+          <a class="menu-item" href="#">
+            <div>Мои регистрации</div>
+          </a>
+          <a class="menu-item" href="#">
+            <div>Избранное</div>
+          </a>
+          <a class="menu-item" href="#">
+            <div>Уведомления</div>
+          </a>
+          <a class="menu-item" href="#">
+            <div>Архив регистраций</div>
+          </a>
+        </div>
+      </aside>
+
+      <section class="content">
+        <div class="section-head">
+          <div>
+            <h2>Профиль</h2>
+          </div>
+        </div>
+
+        <div class="profile-card">
+          <form class="form">
+            <div class="row">
+              <div class="field">
+                <label for="name">Имя</label>
+                <input id="name" type="text" value="Иван" />
+              </div>
+
+              <div class="field">
+                <label for="surname">Фамилия</label>
+                <input id="surname" type="text" value="Иванов" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="patronymic">Отчество</label>
+              <input id="patronymic" type="text" value="Иванович" />
+            </div>
+
+            <div class="field">
+              <label for="email">Почта</label>
+              <input id="email" type="email" value="user@example.com" />
+            </div>
+
+            <div class="field">
+              <label for="phone">Телефон</label>
+              <input id="phone" type="tel" value="+7 900 000-00-00" />
+            </div>
+
+            <div class="field">
+              <label for="old-password">Старый пароль</label>
+              <input id="old-password" type="password" placeholder="Введите текущий пароль" />
+            </div>
+
+            <div class="field">
+              <label for="password">Новый пароль</label>
+              <input id="password" type="password" placeholder="Оставьте пустым, если не меняете пароль" />
+            </div>
+
+            <div class="field">
+              <label for="password2">Повтор нового пароля</label>
+              <input id="password2" type="password" placeholder="Повторите новый пароль" />
+            </div>
+
+            <div class="form-actions">
+              <button class="btn btn-primary" type="button">Сохранить изменения</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

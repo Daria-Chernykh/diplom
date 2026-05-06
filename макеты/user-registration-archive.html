@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PopCulture Events — Архив регистраций</title>
+  <style>
+    :root{
+      --surface:#ffffff;
+      --border:#d7deea;
+      --text:#172033;
+      --muted:#667085;
+      --primary:#4f46e5;
+      --primary-dark:#4338ca;
+      --primary-soft:#e0e7ff;
+      --shadow:0 10px 30px rgba(17,24,39,.08);
+      --radius:18px;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,#eef2ff 0%,#f4f6fb 100%);
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .header{
+      background:rgba(255,255,255,.92);
+      border-bottom:1px solid var(--border);
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter:blur(10px);
+    }
+
+    .header-inner{
+      max-width:1280px;
+      margin:0 auto;
+      padding:18px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:700;
+      font-size:20px;
+    }
+
+    .nav{
+      display:flex;
+      gap:18px;
+      color:var(--muted);
+      font-size:14px;
+      flex-wrap:wrap;
+    }
+
+    .nav a:hover{
+      color:var(--primary);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+      padding:0 16px;
+      border-radius:12px;
+      border:1px solid transparent;
+      font-weight:700;
+      font-size:14px;
+      cursor:pointer;
+      font-family:inherit;
+      text-align:center;
+    }
+
+    .btn-outline{
+      background:#fff;
+      border-color:var(--border);
+      color:var(--text);
+    }
+
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 8px 20px rgba(79,70,229,.24);
+    }
+
+    .page{
+      max-width:1280px;
+      margin:0 auto;
+      padding:24px;
+      display:grid;
+      gap:20px;
+    }
+
+    .title-box{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:24px;
+    }
+
+    .title-box h1{
+      margin:0;
+      font-size:30px;
+    }
+
+    .main{
+      display:grid;
+      grid-template-columns:280px 1fr;
+      gap:20px;
+      align-items:start;
+    }
+
+    .sidebar,
+    .content,
+    .event-card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .sidebar{
+      padding:20px;
+      display:grid;
+      gap:10px;
+      align-self:start;
+      position:sticky;
+      top:96px;
+    }
+
+    .sidebar h2{
+      margin:0 0 6px;
+      font-size:18px;
+    }
+
+    .menu{
+      display:grid;
+      gap:10px;
+    }
+
+    .menu-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 16px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:#fff;
+      font-weight:700;
+      font-size:14px;
+      color:var(--text);
+    }
+
+    .menu-item.active{
+      border-color:#cfd8ff;
+      background:var(--primary-soft);
+      color:var(--primary-dark);
+    }
+
+    .content{
+      padding:20px;
+      display:grid;
+      gap:16px;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+    }
+
+    .section-head h2{
+      margin:0;
+      font-size:22px;
+    }
+
+    .list{
+      display:grid;
+      gap:16px;
+    }
+
+    .event-card{
+      display:grid;
+      grid-template-columns:220px 1fr;
+      overflow:hidden;
+    }
+
+    .event-image{
+      min-height:100%;
+      background:
+        linear-gradient(135deg, rgba(79,70,229,.92), rgba(124,58,237,.75)),
+        linear-gradient(45deg,#111827,#1f2937);
+      position:relative;
+    }
+
+    .event-image::after{
+      content:"";
+      position:absolute;
+      inset:14px;
+      border:1px dashed rgba(255,255,255,.35);
+      border-radius:14px;
+    }
+
+    .event-body{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .event-top{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+    }
+
+    .event-top h3{
+      margin:0;
+      font-size:22px;
+      line-height:1.3;
+    }
+
+    .event-desc{
+      margin:0;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:14px;
+    }
+
+    .meta{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .meta-item{
+      background:#f8faff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:10px 12px;
+    }
+
+    .footer-row{
+      margin-top:auto;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      padding-top:2px;
+    }
+
+    .badge{
+      display:inline-flex;
+      padding:8px 10px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:var(--primary-dark);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .actions-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    @media (max-width:1080px){
+      .main{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:static;
+      }
+
+      .meta{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+
+    @media (max-width:760px){
+      .header-inner,
+      .page{
+        padding-left:16px;
+        padding-right:16px;
+      }
+
+      .nav,
+      .actions{
+        justify-content:flex-start;
+      }
+
+      .content,
+      .sidebar{
+        padding:18px;
+      }
+
+      .event-card{
+        grid-template-columns:1fr;
+      }
+
+      .event-image{
+        min-height:180px;
+      }
+
+      .meta{
+        grid-template-columns:1fr;
+      }
+
+      .actions-row,
+      .footer-row{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .btn{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <div>PopCulture Events</div>
+      </div>
+
+      <nav class="nav">
+        <a href="#">Главная</a>
+        <a href="#">Каталог</a>
+        <a href="#">Документы</a>
+      </nav>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="#">Личный кабинет</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="title-box">
+      <h1>Личный кабинет пользователя</h1>
+    </section>
+
+    <section class="main">
+      <aside class="sidebar">
+        <h2>Разделы</h2>
+
+        <div class="menu">
+          <a class="menu-item" href="#">
+            <div>Профиль</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Мои регистрации</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Избранное</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Уведомления</div>
+          </a>
+
+          <a class="menu-item active" href="#">
+            <div>Архив регистраций</div>
+          </a>
+        </div>
+      </aside>
+
+      <section class="content">
+        <div class="section-head">
+          <div>
+            <h2>Архив регистраций</h2>
+          </div>
+        </div>
+
+        <div class="list">
+          <article class="event-card">
+            <div class="event-image"></div>
+
+            <div class="event-body">
+              <div class="event-top">
+                <h3>K-pop Spring Meetup</h3>
+              </div>
+
+              <p class="event-desc">
+                Весенняя встреча сообщества с танцевальными активностями, фотозоной и тематическими обсуждениями.
+              </p>
+
+              <div class="meta">
+                <div class="meta-item">Москва</div>
+                <div class="meta-item">15 марта 2026</div>
+                <div class="meta-item">Внутренняя регистрация</div>
+              </div>
+
+              <div class="footer-row">
+                <span class="badge">K-pop · Meetup</span>
+
+                <div class="actions-row">
+                  <a class="btn btn-outline" href="#">Открыть</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="event-card">
+            <div class="event-image"></div>
+
+            <div class="event-body">
+              <div class="event-top">
+                <h3>Dance Practice Day</h3>
+              </div>
+
+              <p class="event-desc">
+                Практическая встреча для участников, которые хотели отработать хореографию и подготовить выступления.
+              </p>
+
+              <div class="meta">
+                <div class="meta-item">Москва</div>
+                <div class="meta-item">1 марта 2026</div>
+                <div class="meta-item">Внутренняя регистрация</div>
+              </div>
+
+              <div class="footer-row">
+                <span class="badge">Dance · Practice</span>
+
+                <div class="actions-row">
+                  <a class="btn btn-outline" href="#">Открыть</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="event-card">
+            <div class="event-image"></div>
+
+            <div class="event-body">
+              <div class="event-top">
+                <h3>Fan Meeting Winter</h3>
+              </div>
+
+              <p class="event-desc">
+                Зимняя фан-встреча с интерактивами, обсуждением новостей индустрии и конкурсной частью.
+              </p>
+
+              <div class="meta">
+                <div class="meta-item">Москва</div>
+                <div class="meta-item">10 февраля 2026</div>
+                <div class="meta-item">Внутренняя регистрация</div>
+              </div>
+
+              <div class="footer-row">
+                <span class="badge">Fan Meeting · K-pop</span>
+
+                <div class="actions-row">
+                  <a class="btn btn-outline" href="#">Открыть</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="event-card">
+            <div class="event-image"></div>
+
+            <div class="event-body">
+              <div class="event-top">
+                <h3>Anime Winter Meetup</h3>
+              </div>
+
+              <p class="event-desc">
+                Тематическая встреча поклонников аниме с обсуждениями, конкурсами и неформальным общением.
+              </p>
+
+              <div class="meta">
+                <div class="meta-item">Санкт-Петербург</div>
+                <div class="meta-item">28 января 2026</div>
+                <div class="meta-item">Внутренняя регистрация</div>
+              </div>
+
+              <div class="footer-row">
+                <span class="badge">Anime · Meetup</span>
+
+                <div class="actions-row">
+                  <a class="btn btn-outline" href="#">Открыть</a>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

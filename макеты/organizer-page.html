@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PopCulture Events — Страница организатора</title>
+  <style>
+    :root{
+      --surface:#ffffff;
+      --border:#d7deea;
+      --text:#172033;
+      --muted:#667085;
+      --primary:#4f46e5;
+      --primary-dark:#4338ca;
+      --primary-soft:#e0e7ff;
+      --shadow:0 10px 30px rgba(17,24,39,.08);
+      --radius:18px;
+      --warning:#f79009;
+      --star-empty:#c7cfdd;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,#eef2ff 0%,#f4f6fb 100%);
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .header{
+      background:rgba(255,255,255,.92);
+      border-bottom:1px solid var(--border);
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter:blur(10px);
+    }
+
+    .header-inner{
+      max-width:1280px;
+      margin:0 auto;
+      padding:18px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:700;
+      font-size:20px;
+    }
+
+    .nav{
+      display:flex;
+      gap:18px;
+      color:var(--muted);
+      font-size:14px;
+      flex-wrap:wrap;
+    }
+
+    .nav a:hover{
+      color:var(--primary);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+      padding:0 16px;
+      border-radius:12px;
+      border:1px solid transparent;
+      font-weight:700;
+      font-size:14px;
+      cursor:pointer;
+      font-family:inherit;
+      text-align:center;
+    }
+
+    .btn-outline{
+      background:#fff;
+      border-color:var(--border);
+      color:var(--text);
+    }
+
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 8px 20px rgba(79,70,229,.24);
+    }
+
+    .page{
+      max-width:1280px;
+      margin:0 auto;
+      padding:24px;
+      display:grid;
+      gap:20px;
+    }
+
+    .organizer-card,
+    .section-card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .organizer-card{
+      padding:26px;
+      display:grid;
+      grid-template-columns:170px minmax(0, 1fr);
+      gap:24px;
+      align-items:start;
+      background:
+        radial-gradient(circle at top right, rgba(79,70,229,.12), transparent 30%),
+        #fff;
+    }
+
+    .organizer-photo{
+      width:170px;
+      height:170px;
+      border-radius:28px;
+      background:
+        linear-gradient(135deg, rgba(79,70,229,.92), rgba(124,58,237,.78)),
+        linear-gradient(45deg,#111827,#1f2937);
+      position:relative;
+      overflow:hidden;
+      box-shadow:0 10px 28px rgba(79,70,229,.18);
+    }
+
+    .organizer-photo::after{
+      content:"";
+      position:absolute;
+      inset:16px;
+      border:1px dashed rgba(255,255,255,.42);
+      border-radius:20px;
+    }
+
+    .organizer-info{
+      display:grid;
+      gap:14px;
+      min-width:0;
+    }
+
+    h1{
+      margin:0;
+      font-size:34px;
+      line-height:1.2;
+    }
+
+    .organizer-rating{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .rating-button{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      width:max-content;
+      max-width:100%;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:#fff8ef;
+      padding:8px 12px;
+      cursor:pointer;
+      color:var(--text);
+      font-weight:700;
+    }
+
+    .rating-button:hover{
+      border-color:#f6cf99;
+      background:#fff3df;
+    }
+
+    .rating-stars{
+      display:inline-flex;
+      gap:2px;
+      color:var(--warning);
+      font-size:18px;
+      line-height:1;
+    }
+
+    .rating-stars .empty{
+      color:var(--star-empty);
+    }
+
+    .rating-value{
+      font-weight:700;
+      color:var(--text);
+    }
+
+    .organizer-desc{
+      margin:0;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.8;
+      max-width:900px;
+    }
+
+    .contacts{
+      display:grid;
+      gap:8px;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.7;
+      max-width:900px;
+    }
+
+    .contacts h2{
+      margin:0;
+      color:var(--text);
+      font-size:20px;
+      line-height:1.3;
+    }
+
+    .contacts p{
+      margin:0;
+    }
+
+    .section-card{
+      padding:20px;
+      display:grid;
+      gap:16px;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .section-head h2{
+      margin:0;
+      font-size:24px;
+    }
+
+    .section-head span{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .events-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:16px;
+    }
+
+    .event-card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      min-height:100%;
+    }
+
+    .event-image{
+      height:150px;
+      background:
+        linear-gradient(135deg, rgba(79,70,229,.85), rgba(124,58,237,.75)),
+        linear-gradient(45deg,#111827,#1f2937);
+      position:relative;
+    }
+
+    .event-image::after{
+      content:"";
+      position:absolute;
+      inset:14px;
+      border:1px dashed rgba(255,255,255,.35);
+      border-radius:14px;
+    }
+
+    .event-body{
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      flex:1;
+    }
+
+    .event-body h3{
+      margin:0;
+      font-size:18px;
+      line-height:1.3;
+    }
+
+    .event-text{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+      margin:0;
+    }
+
+    .event-meta{
+      display:grid;
+      gap:8px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .event-rating{
+      display:inline-flex;
+      width:max-content;
+      max-width:100%;
+      padding:7px 10px;
+      border-radius:999px;
+      background:#fff8ef;
+      color:var(--warning);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .event-footer{
+      margin-top:auto;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding-top:6px;
+    }
+
+    .past .event-image{
+      filter:grayscale(.35);
+      opacity:.82;
+    }
+
+    .past .event-card{
+      background:#fbfcff;
+    }
+
+    .modal-toggle{
+      display:none;
+    }
+
+    .modal{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:100;
+      padding:24px;
+      background:rgba(17,24,39,.52);
+      align-items:center;
+      justify-content:center;
+    }
+
+    .modal-toggle:checked + .modal{
+      display:flex;
+    }
+
+    .modal-card{
+      width:100%;
+      max-width:520px;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:22px;
+      box-shadow:0 24px 70px rgba(17,24,39,.24);
+      padding:22px;
+      display:grid;
+      gap:16px;
+      position:relative;
+    }
+
+    .modal-head{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      align-items:flex-start;
+    }
+
+    .modal-head h2{
+      margin:0;
+      font-size:22px;
+    }
+
+    .close{
+      width:38px;
+      height:38px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      background:#fff;
+      color:var(--muted);
+      font-weight:700;
+      font-size:18px;
+    }
+
+    .rating-form{
+      display:grid;
+      gap:16px;
+    }
+
+    .rating-field{
+      display:grid;
+      gap:10px;
+    }
+
+    .rating-field label{
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .star-select{
+      display:flex;
+      flex-direction:row-reverse;
+      justify-content:flex-end;
+      gap:6px;
+      width:max-content;
+      max-width:100%;
+    }
+
+    .star-select input{
+      display:none;
+    }
+
+    .star-select label{
+      color:var(--star-empty);
+      font-size:34px;
+      line-height:1;
+      cursor:pointer;
+      transition:.15s;
+    }
+
+    .star-select input:checked ~ label,
+    .star-select label:hover,
+    .star-select label:hover ~ label{
+      color:var(--warning);
+    }
+
+    .modal-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    @media (max-width:1080px){
+      .events-grid{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width:760px){
+      .header-inner,
+      .page{
+        padding-left:16px;
+        padding-right:16px;
+      }
+
+      .organizer-card{
+        grid-template-columns:1fr;
+      }
+
+      .organizer-photo{
+        width:130px;
+        height:130px;
+        border-radius:24px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .events-grid{
+        grid-template-columns:1fr;
+      }
+
+      .nav,
+      .actions,
+      .section-head{
+        justify-content:flex-start;
+      }
+
+      .event-footer,
+      .modal-actions{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .event-footer .btn,
+      .modal-actions .btn{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <div>PopCulture Events</div>
+      </div>
+
+      <nav class="nav">
+        <a href="#">Главная</a>
+        <a href="#">Каталог</a>
+        <a href="#">Документы</a>
+      </nav>
+
+      <div class="actions">
+        <a class="btn btn-outline" href="#">Вход</a>
+        <a class="btn btn-primary" href="#">Регистрация</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="organizer-card">
+      <div class="organizer-photo"></div>
+
+      <div class="organizer-info">
+        <h1>K-pop Events Team</h1>
+
+        <div class="organizer-rating">
+          <label class="rating-button" for="organizer-rating-modal">
+            <span class="rating-stars">
+              <span>★</span>
+              <span>★</span>
+              <span>★</span>
+              <span>★</span>
+              <span class="empty">★</span>
+            </span>
+            <span class="rating-value">4.7</span>
+          </label>
+        </div>
+
+        <p class="organizer-desc">
+          K-pop Events Team занимается организацией танцевальных встреч, тематических мероприятий,
+          фан-встреч и конкурсных программ для поклонников k-pop культуры. На странице организатора
+          пользователи могут посмотреть актуальные события, ознакомиться с прошедшими мероприятиями
+          и перейти к карточкам интересующих событий.
+        </p>
+
+      </div>
+    </section>
+
+    <section class="section-card">
+      <div class="section-head">
+        <div>
+          <h2>События</h2>
+        </div>
+        <span>Актуальные мероприятия организатора</span>
+      </div>
+
+      <div class="events-grid">
+        <article class="event-card">
+          <div class="event-image"></div>
+          <div class="event-body">
+            <h3>K-pop Night</h3>
+            <p class="event-text">
+              Танцевальное мероприятие для поклонников k-pop с конкурсами, сценическими выступлениями и призами.
+            </p>
+            <div class="event-meta">
+              <div>Москва · 20 апреля 2026</div>
+            </div>
+            <div class="event-footer">
+              <a class="btn btn-outline" href="#">Подробнее</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="event-card">
+          <div class="event-image"></div>
+          <div class="event-body">
+            <h3>Random Dance Day</h3>
+            <p class="event-text">
+              Открытая танцевальная встреча с популярными треками, свободным участием и неформальной атмосферой.
+            </p>
+            <div class="event-meta">
+              <div>Москва · 28 апреля 2026</div>
+            </div>
+            <div class="event-footer">
+              <a class="btn btn-outline" href="#">Подробнее</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="event-card">
+          <div class="event-image"></div>
+          <div class="event-body">
+            <h3>Cover Dance Battle</h3>
+            <p class="event-text">
+              Соревнование кавер-команд с выступлениями, оценкой жюри и итоговым награждением.
+            </p>
+            <div class="event-meta">
+              <div>Москва · 4 мая 2026</div>
+            </div>
+            <div class="event-footer">
+              <a class="btn btn-outline" href="#">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-card past">
+      <div class="section-head">
+        <div>
+          <h2>Прошедшие события</h2>
+        </div>
+        <span>Архив мероприятий организатора</span>
+      </div>
+
+      <div class="events-grid">
+        <article class="event-card">
+          <div class="event-image"></div>
+          <div class="event-body">
+            <h3>K-pop Spring Meetup</h3>
+            <p class="event-text">
+              Весенняя встреча сообщества с танцевальными активностями, фотозоной и тематическими обсуждениями.
+            </p>
+            <div class="event-meta">
+              <div>Москва · 15 марта 2026</div>
+              <div class="event-rating">★ 4.6 · 18 отзывов</div>
+            </div>
+            <div class="event-footer">
+              <a class="btn btn-outline" href="#">Подробнее</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="event-card">
+          <div class="event-image"></div>
+          <div class="event-body">
+            <h3>Dance Practice Day</h3>
+            <p class="event-text">
+              Практическая встреча для участников, которые хотели отработать хореографию и подготовить выступления.
+            </p>
+            <div class="event-meta">
+              <div>Москва · 1 марта 2026</div>
+              <div class="event-rating">★ 4.8 · 12 отзывов</div>
+            </div>
+            <div class="event-footer">
+              <a class="btn btn-outline" href="#">Подробнее</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="event-card">
+          <div class="event-image"></div>
+          <div class="event-body">
+            <h3>Fan Meeting Winter</h3>
+            <p class="event-text">
+              Зимняя фан-встреча с интерактивами, обсуждением новостей индустрии и конкурсной частью.
+            </p>
+            <div class="event-meta">
+              <div>Москва · 10 февраля 2026</div>
+            </div>
+            <div class="event-footer">
+              <a class="btn btn-outline" href="#">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <input class="modal-toggle" type="checkbox" id="organizer-rating-modal" />
+
+  <div class="modal">
+    <section class="modal-card">
+      <div class="modal-head">
+        <h2>Оценка организатора</h2>
+        <label class="close" for="organizer-rating-modal">×</label>
+      </div>
+
+      <form class="rating-form">
+        <div class="rating-field">
+          <label>Поставьте оценку</label>
+
+          <div class="star-select">
+            <input type="radio" name="organizer-rating" id="rating-5" value="5" />
+            <label for="rating-5">★</label>
+
+            <input type="radio" name="organizer-rating" id="rating-4" value="4" />
+            <label for="rating-4">★</label>
+
+            <input type="radio" name="organizer-rating" id="rating-3" value="3" />
+            <label for="rating-3">★</label>
+
+            <input type="radio" name="organizer-rating" id="rating-2" value="2" />
+            <label for="rating-2">★</label>
+
+            <input type="radio" name="organizer-rating" id="rating-1" value="1" />
+            <label for="rating-1">★</label>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <label class="btn btn-outline" for="organizer-rating-modal">Отмена</label>
+          <button class="btn btn-primary" type="button">Сохранить оценку</button>
+        </div>
+      </form>
+    </section>
+  </div>
+</body>
+</html>

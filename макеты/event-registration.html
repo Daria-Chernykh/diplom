@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PopCulture Events — Регистрация на мероприятие</title>
+  <style>
+    :root{
+      --surface:#ffffff;
+      --border:#d7deea;
+      --text:#172033;
+      --muted:#667085;
+      --primary:#4f46e5;
+      --primary-dark:#4338ca;
+      --primary-soft:#e0e7ff;
+      --shadow:0 10px 30px rgba(17,24,39,.08);
+      --radius:18px;
+      --warning:#f79009;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,#eef2ff 0%,#f4f6fb 100%);
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .header{
+      background:rgba(255,255,255,.92);
+      border-bottom:1px solid var(--border);
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter:blur(10px);
+    }
+
+    .header-inner{
+      max-width:1280px;
+      margin:0 auto;
+      padding:18px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:700;
+      font-size:20px;
+    }
+
+    .logo{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      background:linear-gradient(135deg,var(--primary),#7c3aed);
+    }
+
+    .nav{
+      display:flex;
+      gap:18px;
+      color:var(--muted);
+      font-size:14px;
+      flex-wrap:wrap;
+    }
+
+    .nav a:hover{
+      color:var(--primary);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+      padding:0 16px;
+      border-radius:12px;
+      border:1px solid transparent;
+      font-weight:700;
+      font-size:14px;
+      cursor:pointer;
+      font-family:inherit;
+      text-align:center;
+    }
+
+    .btn-outline{
+      background:#fff;
+      border-color:var(--border);
+      color:var(--text);
+    }
+
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 8px 20px rgba(79,70,229,.24);
+    }
+
+    .page{
+      max-width:900px;
+      margin:0 auto;
+      padding:24px;
+      display:grid;
+      gap:20px;
+    }
+
+    .hero,
+    .panel{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .hero{
+      padding:20px;
+      display:grid;
+      gap:12px;
+    }
+
+    .hero h1{
+      margin:0;
+      font-size:30px;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:14px;
+    }
+
+    .pill{
+      display:inline-flex;
+      width:max-content;
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(247,144,9,.14);
+      color:var(--warning);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .requirements{
+      padding:20px;
+      display:grid;
+      gap:10px;
+    }
+
+    .requirements h2{
+      margin:0;
+      font-size:20px;
+    }
+
+    .requirements-text{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .form-card{
+      padding:20px;
+    }
+
+    .form-card h2{
+      margin:0 0 16px;
+      font-size:20px;
+    }
+
+    .form{
+      display:grid;
+      gap:14px;
+    }
+
+    .field label{
+      display:block;
+      margin-bottom:8px;
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .field input,
+    .field select,
+    .field textarea{
+      width:100%;
+      min-height:48px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:0 14px;
+      font-size:14px;
+      outline:none;
+      background:#fff;
+      font-family:inherit;
+    }
+
+    .field textarea{
+      min-height:110px;
+      padding:12px 14px;
+      resize:vertical;
+    }
+
+    .check{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+      margin-top:2px;
+    }
+
+    .form-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:4px;
+    }
+
+
+    .legal-check{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .legal-check input{
+      margin-top:2px;
+      accent-color:var(--primary);
+    }
+
+    .legal-check a,
+    .check a,
+    .complaint-note a,
+    .review-note a{
+      color:var(--primary-dark);
+      font-weight:700;
+      text-decoration:underline;
+      text-underline-offset:2px;
+    }
+
+    @media (max-width:720px){
+      .header-inner,
+      .page{
+        padding-left:16px;
+        padding-right:16px;
+      }
+
+      .form-actions{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .btn{
+        width:100%;
+      }
+
+      .nav,
+      .actions{
+        justify-content:flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <div>PopCulture Events</div>
+      </div>
+
+      <nav class="nav">
+        <a href="#">Главная</a>
+        <a href="#">Каталог</a>
+        <a href="#">Документы</a>
+      </nav>
+
+      <div class="actions">
+        <a class="btn btn-outline" href="#">Вход</a>
+        <a class="btn btn-primary" href="#">Регистрация</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <span class="pill">Регистрация с подтверждением организатором</span>
+      <h1><a href="#">K-pop Night</a></h1>
+      <p>
+        Заполните форму для подачи заявки на участие. После отправки данные будут переданы организатору,
+        и регистрация станет активной только после подтверждения заявки.
+      </p>
+    </section>
+
+    <section class="panel requirements">
+      <h2>Требования к участникам</h2>
+      <p class="requirements-text">
+        Возраст от 16 лет. Для участия необходимо заранее пройти регистрацию на сайте.
+        Участникам рекомендуется прийти за 20 минут до начала программы и соблюдать правила площадки.
+      </p>
+    </section>
+
+    <section class="panel form-card">
+      <h2>Регистрационная форма</h2>
+
+      <form class="form">
+        <div class="field">
+          <label for="name">Имя</label>
+          <input id="name" type="text" placeholder="Введите имя" />
+        </div>
+
+        <div class="field">
+          <label for="surname">Фамилия</label>
+          <input id="surname" type="text" placeholder="Введите фамилию" />
+        </div>
+
+        <div class="field">
+          <label for="email">Электронная почта</label>
+          <input id="email" type="email" placeholder="name@example.com" />
+        </div>
+
+        <div class="field">
+          <label for="phone">Телефон</label>
+          <input id="phone" type="tel" placeholder="+7 ___ ___-__-__" />
+        </div>
+
+        <div class="field">
+          <label for="comment">Комментарий</label>
+          <textarea id="comment" placeholder="Дополнительная информация для организатора"></textarea>
+        </div>
+
+        <label class="check">
+          <input type="checkbox" />
+          <span>Я подтверждаю корректность данных, ознакомлен с <a href="#" target="_blank" rel="noopener noreferrer">Политикой обработки персональных данных</a> и даю согласие на передачу данных организатору мероприятия для обработки заявки на регистрацию.</span>
+        </label>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" type="button">Отправить заявку</button>
+          <a class="btn btn-outline" href="#">Вернуться к мероприятию</a>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

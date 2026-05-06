@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PopCulture Events — Организаторы</title>
+  <style>
+    :root{
+      --surface:#ffffff;
+      --border:#d7deea;
+      --text:#172033;
+      --muted:#667085;
+      --primary:#4f46e5;
+      --primary-dark:#4338ca;
+      --primary-soft:#e0e7ff;
+      --shadow:0 10px 30px rgba(17,24,39,.08);
+      --radius:18px;
+      --success:#12b76a;
+      --danger:#f04438;
+      --warning:#f79009;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,#eef2ff 0%,#f4f6fb 100%);
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .header{
+      background:rgba(255,255,255,.92);
+      border-bottom:1px solid var(--border);
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter:blur(10px);
+    }
+
+    .header-inner{
+      max-width:1280px;
+      margin:0 auto;
+      padding:18px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:700;
+      font-size:20px;
+    }
+
+    .nav{
+      display:flex;
+      gap:18px;
+      color:var(--muted);
+      font-size:14px;
+      flex-wrap:wrap;
+    }
+
+    .nav a:hover{
+      color:var(--primary);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+      padding:0 16px;
+      border-radius:12px;
+      border:1px solid transparent;
+      font-weight:700;
+      font-size:14px;
+      cursor:pointer;
+      font-family:inherit;
+      text-align:center;
+      white-space:nowrap;
+    }
+
+    .btn-outline{
+      background:#fff;
+      border-color:var(--border);
+      color:var(--text);
+    }
+
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 8px 20px rgba(79,70,229,.24);
+    }
+
+    .btn-danger{
+      background:#fff;
+      color:var(--danger);
+      border-color:#f4b4b0;
+    }
+
+    .btn-success{
+      background:#fff;
+      color:var(--success);
+      border-color:#a9e7c7;
+    }
+
+    .page{
+      max-width:1280px;
+      margin:0 auto;
+      padding:24px;
+      display:grid;
+      gap:20px;
+    }
+
+    .title-box{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:24px;
+    }
+
+    .title-box h1{
+      margin:0;
+      font-size:30px;
+    }
+
+    .main{
+      display:grid;
+      grid-template-columns:280px 1fr;
+      gap:20px;
+      align-items:start;
+    }
+
+    .sidebar,
+    .content,
+    .toolbar,
+    .organizer-card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .sidebar{
+      padding:20px;
+      display:grid;
+      gap:10px;
+      align-self:start;
+      position:sticky;
+      top:96px;
+    }
+
+    .sidebar h2{
+      margin:0 0 6px;
+      font-size:18px;
+    }
+
+    .menu{
+      display:grid;
+      gap:10px;
+    }
+
+    .menu-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 16px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:#fff;
+      font-weight:700;
+      font-size:14px;
+      color:var(--text);
+    }
+
+    .menu-item.active{
+      border-color:#cfd8ff;
+      background:var(--primary-soft);
+      color:var(--primary-dark);
+    }
+
+    .content{
+      padding:20px;
+      display:grid;
+      gap:16px;
+      min-width:0;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .section-head h2{
+      margin:0;
+      font-size:22px;
+    }
+
+    .toolbar{
+      box-shadow:none;
+      padding:16px;
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:12px;
+      align-items:end;
+      background:#f8faff;
+    }
+
+    .field label{
+      display:block;
+      margin-bottom:8px;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .field input{
+      width:100%;
+      min-height:44px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:0 12px;
+      font-size:14px;
+      outline:none;
+      background:#fff;
+      font-family:inherit;
+      color:var(--text);
+    }
+
+    .list{
+      display:grid;
+      gap:14px;
+    }
+
+    .organizer-card{
+      padding:16px;
+      display:grid;
+      gap:14px;
+    }
+
+    .organizer-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .organizer-main{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      min-width:0;
+    }
+
+    .organizer-photo{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      background:
+        linear-gradient(135deg, rgba(79,70,229,.92), rgba(124,58,237,.78)),
+        linear-gradient(45deg,#111827,#1f2937);
+      flex:0 0 auto;
+    }
+
+    .organizer-title{
+      display:grid;
+      gap:5px;
+      min-width:0;
+    }
+
+    .organizer-title h3{
+      margin:0;
+      font-size:18px;
+      line-height:1.3;
+    }
+
+    .organizer-title span{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .status{
+      display:inline-flex;
+      width:max-content;
+      max-width:100%;
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    .status.active{
+      background:rgba(18,183,106,.12);
+      color:var(--success);
+    }
+
+    .status.blocked{
+      background:rgba(240,68,56,.12);
+      color:var(--danger);
+    }
+
+    .actions-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    
+    .organizer-rating{
+      color:var(--warning);
+      font-size:13px;
+      font-weight:700;
+      line-height:1.4;
+    }
+
+    @media (max-width:1080px){
+      .main{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:static;
+      }
+
+      .toolbar{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:760px){
+      .header-inner,
+      .page{
+        padding-left:16px;
+        padding-right:16px;
+      }
+
+      .nav,
+      .actions{
+        justify-content:flex-start;
+      }
+
+      .content,
+      .sidebar{
+        padding:18px;
+      }
+
+      .organizer-main{
+        align-items:flex-start;
+      }
+
+      .actions-row{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .btn{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <div>PopCulture Events</div>
+      </div>
+
+      <nav class="nav">
+        <a href="#">Главная</a>
+        <a href="#">Каталог</a>
+        <a href="#">Документы</a>
+      </nav>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="#">Личный кабинет</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="title-box">
+      <h1>Личный кабинет администратора</h1>
+    </section>
+
+    <section class="main">
+      <aside class="sidebar">
+        <h2>Разделы</h2>
+
+        <div class="menu">
+          <a class="menu-item" href="#">
+            <div>Жалобы</div>
+          </a>
+
+          <a class="menu-item active" href="#">
+            <div>Организаторы</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Пользователи</div>
+          </a>
+        </div>
+      </aside>
+
+      <section class="content">
+        <div class="section-head">
+          <div>
+            <h2>Организаторы</h2>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="field">
+            <input id="organizer-search" type="text" placeholder="Поиск по организаторам" />
+          </div>
+
+          <button class="btn btn-primary" type="button">Найти</button>
+        </div>
+
+        <div class="list">
+          <article class="organizer-card">
+            <div class="organizer-head">
+              <div class="organizer-main">
+                <div class="organizer-photo"></div>
+                <div class="organizer-title">
+                  <h3>K-pop Events Team</h3>
+                  <span>kpop-team@example.com</span>
+                  <div class="organizer-rating">★ 4.7</div>
+                </div>
+              </div>
+
+              <span class="status active">Активен</span>
+            </div>
+
+            <div class="actions-row">
+              <a class="btn btn-outline" href="#">Перейти к странице</a>
+              <button class="btn btn-danger" type="button">Заблокировать</button>
+            </div>
+          </article>
+
+          <article class="organizer-card">
+            <div class="organizer-head">
+              <div class="organizer-main">
+                <div class="organizer-photo"></div>
+                <div class="organizer-title">
+                  <h3>Cosplay Community Kazan</h3>
+                  <span>cosplay-kazan@example.com</span>
+                  <div class="organizer-rating">★ 4.6</div>
+                </div>
+              </div>
+
+              <span class="status blocked">Заблокирован</span>
+            </div>
+
+            <div class="actions-row">
+              <a class="btn btn-outline" href="#">Перейти к странице</a>
+              <button class="btn btn-success" type="button">Разблокировать</button>
+            </div>
+          </article>
+
+          <article class="organizer-card">
+            <div class="organizer-head">
+              <div class="organizer-main">
+                <div class="organizer-photo"></div>
+                <div class="organizer-title">
+                  <h3>Anime Club Moscow</h3>
+                  <span>anime-club@example.com</span>
+                  <div class="organizer-rating">★ 4.8</div>
+                </div>
+              </div>
+
+              <span class="status blocked">Заблокирован</span>
+            </div>
+
+            <div class="actions-row">
+              <a class="btn btn-outline" href="#">Перейти к странице</a>
+              <button class="btn btn-success" type="button">Разблокировать</button>
+            </div>
+          </article>
+
+          <article class="organizer-card">
+            <div class="organizer-head">
+              <div class="organizer-main">
+                <div class="organizer-photo"></div>
+                <div class="organizer-title">
+                  <h3>Dance Fest Group</h3>
+                  <span>dance-fest@example.com</span>
+                  <div class="organizer-rating">★ 2.0</div>
+                </div>
+              </div>
+
+              <span class="status active">Активен</span>
+            </div>
+
+            <div class="actions-row">
+              <a class="btn btn-outline" href="#">Перейти к странице</a>
+              <button class="btn btn-danger" type="button">Заблокировать</button>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

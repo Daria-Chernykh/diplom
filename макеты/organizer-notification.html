@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PopCulture Events — Уведомления организатора</title>
+  <style>
+    :root{
+      --surface:#ffffff;
+      --border:#d7deea;
+      --text:#172033;
+      --muted:#667085;
+      --primary:#4f46e5;
+      --primary-dark:#4338ca;
+      --primary-soft:#e0e7ff;
+      --shadow:0 10px 30px rgba(17,24,39,.08);
+      --radius:18px;
+      --success:#12b76a;
+      --warning:#f79009;
+      --danger:#f04438;
+      --info:#2563eb;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,#eef2ff 0%,#f4f6fb 100%);
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .header{
+      background:rgba(255,255,255,.92);
+      border-bottom:1px solid var(--border);
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter:blur(10px);
+    }
+
+    .header-inner{
+      max-width:1280px;
+      margin:0 auto;
+      padding:18px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:700;
+      font-size:20px;
+    }
+
+    .nav{
+      display:flex;
+      gap:18px;
+      color:var(--muted);
+      font-size:14px;
+      flex-wrap:wrap;
+    }
+
+    .nav a:hover{
+      color:var(--primary);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+      padding:0 16px;
+      border-radius:12px;
+      border:1px solid transparent;
+      font-weight:700;
+      font-size:14px;
+      cursor:pointer;
+      font-family:inherit;
+      text-align:center;
+    }
+
+    .btn-outline{
+      background:#fff;
+      border-color:var(--border);
+      color:var(--text);
+    }
+
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 8px 20px rgba(79,70,229,.24);
+    }
+
+    .page{
+      max-width:1280px;
+      margin:0 auto;
+      padding:24px;
+      display:grid;
+      gap:20px;
+    }
+
+    .title-box{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:24px;
+    }
+
+    .title-box h1{
+      margin:0;
+      font-size:30px;
+    }
+
+    .main{
+      display:grid;
+      grid-template-columns:280px 1fr;
+      gap:20px;
+      align-items:start;
+    }
+
+    .sidebar,
+    .content{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .sidebar{
+      padding:20px;
+      display:grid;
+      gap:10px;
+      align-self:start;
+      position:sticky;
+      top:96px;
+    }
+
+    .sidebar h2{
+      margin:0 0 6px;
+      font-size:18px;
+    }
+
+    .menu{
+      display:grid;
+      gap:10px;
+    }
+
+    .menu-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 16px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:#fff;
+      font-weight:700;
+      font-size:14px;
+      color:var(--text);
+    }
+
+    .menu-item.active{
+      border-color:#cfd8ff;
+      background:var(--primary-soft);
+      color:var(--primary-dark);
+    }
+
+    .unread-dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--primary);
+      flex:0 0 auto;
+      box-shadow:0 0 0 4px rgba(79,70,229,.14);
+    }
+
+    .content{
+      padding:20px;
+      display:grid;
+      gap:16px;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+    }
+
+    .section-head h2{
+      margin:0;
+      font-size:22px;
+    }
+
+    .tabs{
+      border:1px solid var(--border);
+      border-radius:16px;
+      background:#f8faff;
+      padding:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .tab-input{
+      display:none;
+    }
+
+    .tab-label{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:42px;
+      padding:0 16px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--text);
+      font-weight:700;
+      font-size:14px;
+      cursor:pointer;
+    }
+
+    .tab-label::before{
+      content:"";
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      border:2px solid var(--border);
+      background:#fff;
+    }
+
+    #organizer-tab:checked ~ .tabs label[for="organizer-tab"],
+    #participant-tab:checked ~ .tabs label[for="participant-tab"]{
+      border-color:#cfd8ff;
+      background:var(--primary-soft);
+      color:var(--primary-dark);
+    }
+
+    #organizer-tab:checked ~ .tabs label[for="organizer-tab"]::before,
+    #participant-tab:checked ~ .tabs label[for="participant-tab"]::before{
+      border-color:var(--primary);
+      background:
+        radial-gradient(circle, var(--primary) 0 42%, transparent 46%),
+        #fff;
+    }
+
+    .list{
+      display:none;
+      gap:14px;
+    }
+
+    #organizer-tab:checked ~ .organizer-list{
+      display:grid;
+    }
+
+    #participant-tab:checked ~ .participant-list{
+      display:grid;
+    }
+
+    .notification{
+      border:1px solid var(--border);
+      border-radius:16px;
+      background:#f8faff;
+      padding:16px;
+      display:grid;
+      gap:12px;
+    }
+
+    .notification.unread{
+      border-color:#bfcaff;
+      background:#e5e9ff;
+    }
+
+    .notification-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+    }
+
+    .notification-title{
+      display:grid;
+      gap:6px;
+    }
+
+    .notification-title h3{
+      margin:0;
+      font-size:18px;
+      line-height:1.35;
+    }
+
+    .event-name{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .event-name strong{
+      color:var(--text);
+    }
+
+    .type{
+      display:inline-flex;
+      width:max-content;
+      max-width:100%;
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    .type.registration{
+      background:rgba(18,183,106,.12);
+      color:var(--success);
+    }
+
+    .type.moderation{
+      background:rgba(37,99,235,.12);
+      color:var(--info);
+    }
+
+    .type.complaint{
+      background:var(--primary-soft);
+      color:var(--primary-dark);
+    }
+
+    .type.reminder{
+      background:rgba(247,144,9,.14);
+      color:var(--warning);
+    }
+
+    .type.block{
+      background:rgba(240,68,56,.12);
+      color:var(--danger);
+    }
+
+    .type.system{
+      background:#edf2f7;
+      color:var(--muted);
+    }
+
+    .type.update{
+      background:rgba(37,99,235,.12);
+      color:var(--info);
+    }
+
+    .notification p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .notification-footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .date{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    @media (max-width:1080px){
+      .main{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:static;
+      }
+    }
+
+    @media (max-width:760px){
+      .header-inner,
+      .page{
+        padding-left:16px;
+        padding-right:16px;
+      }
+
+      .nav,
+      .actions{
+        justify-content:flex-start;
+      }
+
+      .content,
+      .sidebar{
+        padding:18px;
+      }
+
+      .tabs{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .tab-label{
+        width:100%;
+      }
+
+      .notification-footer{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .btn{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <div>PopCulture Events</div>
+      </div>
+
+      <nav class="nav">
+        <a href="#">Главная</a>
+        <a href="#">Каталог</a>
+        <a href="#">Документы</a>
+      </nav>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="#">Личный кабинет</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="title-box">
+      <h1>Личный кабинет организатора</h1>
+    </section>
+
+    <section class="main">
+      <aside class="sidebar">
+        <h2>Разделы</h2>
+
+        <div class="menu">
+          <a class="menu-item" href="#">
+            <div>Профиль</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Мои мероприятия</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Мои регистрации</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Избранное</div>
+          </a>
+
+          <a class="menu-item active" href="#">
+            <div>Уведомления</div>
+            <span class="unread-dot"></span>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Архив мероприятий</div>
+          </a>
+
+          <a class="menu-item" href="#">
+            <div>Архив регистраций</div>
+          </a>
+        </div>
+      </aside>
+
+      <section class="content">
+        <div class="section-head">
+          <div>
+            <h2>Уведомления</h2>
+          </div>
+        </div>
+
+        <input class="tab-input" type="radio" name="notification-type" id="organizer-tab" checked />
+        <input class="tab-input" type="radio" name="notification-type" id="participant-tab" />
+
+        <div class="tabs">
+          <label class="tab-label" for="organizer-tab">Уведомления организатора</label>
+          <label class="tab-label" for="participant-tab">Уведомления участника мероприятий</label>
+        </div>
+
+        <div class="list organizer-list">
+          <article class="notification unread">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Пароль изменен</h3>
+              </div>
+              <span class="type system">Системное</span>
+            </div>
+            <p>
+              Пароль учетной записи успешно изменен. Если изменение выполняли не вы, необходимо обратиться к администратору системы.
+            </p>
+            <div class="notification-footer">
+              <span class="date">23 апреля 2026 · 10:15</span>
+              <a class="btn btn-outline" href="#">Перейти к профилю</a>
+            </div>
+          </article>
+
+          <article class="notification unread">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Данные организации обновлены</h3>
+              </div>
+              <span class="type system">Системное</span>
+            </div>
+            <p>
+              Изменено название организации, описание или фото. Обновленные данные будут отображаться на странице организатора и в карточках мероприятий.
+            </p>
+            <div class="notification-footer">
+              <span class="date">23 апреля 2026 · 10:00</span>
+              <a class="btn btn-outline" href="#">Перейти к профилю</a>
+            </div>
+          </article>
+
+          <article class="notification unread">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Профиль обновлен</h3>
+              </div>
+              <span class="type system">Системное</span>
+            </div>
+            <p>
+              Данные профиля организатора успешно обновлены. Проверьте актуальность имени, почты и телефона.
+            </p>
+            <div class="notification-footer">
+              <span class="date">23 апреля 2026 · 09:50</span>
+              <a class="btn btn-outline" href="#">Перейти к профилю</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Изменена ссылка на внешнюю регистрацию</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> Cosplay Showcase</div>
+              </div>
+              <span class="type update">Внешняя регистрация</span>
+            </div>
+            <p>
+              Ссылка на внешнюю регистрацию была изменена. Пользователи, добавившие мероприятие в избранное или подтвердившие регистрацию, получат уведомление.
+            </p>
+            <div class="notification-footer">
+              <span class="date">22 апреля 2026 · 16:30</span>
+              <a class="btn btn-outline" href="#">Перейти к мероприятию</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Пользователь подтвердил внешнюю регистрацию</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> Cosplay Showcase</div>
+              </div>
+              <span class="type registration">Регистрация</span>
+            </div>
+            <p>
+              Пользователь перешел на внешний сайт и отметил на платформе, что зарегистрировался на мероприятие.
+            </p>
+            <div class="notification-footer">
+              <span class="date">22 апреля 2026 · 15:40</span>
+              <a class="btn btn-outline" href="#">Перейти к участникам</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Мероприятие завершилось</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> K-pop Night</div>
+              </div>
+              <span class="type reminder">Сроки</span>
+            </div>
+            <p>
+              На следующие сутки после даты мероприятия оно было перенесено в архив мероприятий.
+            </p>
+            <div class="notification-footer">
+              <span class="date">21 апреля 2026 · 10:00</span>
+              <a class="btn btn-outline" href="#">Перейти к архиву мероприятий</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Мероприятие началось</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> K-pop Night</div>
+              </div>
+              <span class="type reminder">Сроки</span>
+            </div>
+            <p>
+              Наступило время начала мероприятия. Можно проверить карточку и список участников.
+            </p>
+            <div class="notification-footer">
+              <span class="date">20 апреля 2026 · 18:00</span>
+              <a class="btn btn-outline" href="#">Перейти к мероприятию</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Мероприятие скоро начнется</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> K-pop Night</div>
+              </div>
+              <span class="type reminder">Сроки</span>
+            </div>
+            <p>
+              До начала мероприятия осталось 24 часа. Проверьте актуальность карточки, расписания и списка участников.
+            </p>
+            <div class="notification-footer">
+              <span class="date">19 апреля 2026 · 18:00</span>
+              <a class="btn btn-outline" href="#">Перейти к мероприятию</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Карточка заблокирована</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> K-pop Workshop</div>
+              </div>
+              <span class="type block">Жалоба</span>
+            </div>
+            <p>
+              Администратор не принял внесенные изменения. Карточка остается заблокированной, но можно повторно внести исправления.
+            </p>
+            <div class="notification-footer">
+              <span class="date">19 апреля 2026 · 15:30</span>
+              <a class="btn btn-outline" href="#">Редактировать мероприятие</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Жалоба отклонена администратором</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> Anime Fan Meetup</div>
+              </div>
+              <span class="type complaint">Жалоба</span>
+            </div>
+            <p>
+              Администратор отклонил жалобу до внесения изменений. Карточка снова доступна пользователям.
+            </p>
+            <div class="notification-footer">
+              <span class="date">19 апреля 2026 · 14:20</span>
+              <a class="btn btn-outline" href="#">Перейти к мероприятию</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Исправления приняты, карточка опубликована</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> Cover Dance Battle</div>
+              </div>
+              <span class="type moderation">Модерация</span>
+            </div>
+            <p>
+              Администратор принял исправления. Карточка снова опубликована и доступна пользователям.
+            </p>
+            <div class="notification-footer">
+              <span class="date">19 апреля 2026 · 13:10</span>
+              <a class="btn btn-outline" href="#">Перейти к мероприятию</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Карточка отправлена на рассмотрение администратору</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> Cover Dance Battle</div>
+              </div>
+              <span class="type moderation">Модерация</span>
+            </div>
+            <p>
+              Вы внесли изменения и/или ответили на жалобу. Карточка передана администратору для проверки.
+            </p>
+            <div class="notification-footer">
+              <span class="date">19 апреля 2026 · 11:45</span>
+              <a class="btn btn-outline" href="#">Перейти к мероприятию</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Получена жалоба, карточка заблокирована</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> Cover Dance Battle</div>
+              </div>
+              <span class="type block">Жалоба</span>
+            </div>
+            <p>
+              На мероприятие поступила жалоба. Карточка временно заблокирована до решения администратора или до внесения исправлений.
+            </p>
+            <div class="notification-footer">
+              <span class="date">19 апреля 2026 · 10:30</span>
+              <a class="btn btn-outline" href="#">Редактировать мероприятие</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Мероприятие опубликовано</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> Random Dance Day</div>
+              </div>
+              <span class="type moderation">Модерация</span>
+            </div>
+            <p>
+              После создания карточка мероприятия была опубликована и стала доступна пользователям.
+            </p>
+            <div class="notification-footer">
+              <span class="date">18 апреля 2026 · 17:20</span>
+              <a class="btn btn-outline" href="#">Перейти к мероприятию</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Пользователь отменил регистрацию</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> K-pop Night</div>
+              </div>
+              <span class="type registration">Регистрация</span>
+            </div>
+            <p>
+              Пользователь отменил уже подтвержденную регистрацию на мероприятие.
+            </p>
+            <div class="notification-footer">
+              <span class="date">18 апреля 2026 · 16:10</span>
+              <a class="btn btn-outline" href="#">Перейти к мероприятию</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Пользователь отменил заявку</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> Anime Fan Meetup</div>
+              </div>
+              <span class="type registration">Регистрация</span>
+            </div>
+            <p>
+              Пользователь отменил неподтвержденную заявку на регистрацию.
+            </p>
+            <div class="notification-footer">
+              <span class="date">18 апреля 2026 · 15:45</span>
+              <a class="btn btn-outline" href="#">Перейти к мероприятию</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Новая регистрация на мероприятие</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> Random Dance Day</div>
+              </div>
+              <span class="type registration">Регистрация</span>
+            </div>
+            <p>
+              Пользователь зарегистрировался на мероприятие без подтверждения.
+            </p>
+            <div class="notification-footer">
+              <span class="date">18 апреля 2026 · 14:25</span>
+              <a class="btn btn-outline" href="#">Перейти к участникам</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Новая заявка на регистрацию</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> Anime Fan Meetup</div>
+              </div>
+              <span class="type registration">Регистрация</span>
+            </div>
+            <p>
+              Пользователь заполнил форму регистрации на мероприятие с подтверждением организатором.
+            </p>
+            <div class="notification-footer">
+              <span class="date">18 апреля 2026 · 12:10</span>
+              <a class="btn btn-outline" href="#">Перейти к участникам</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="list participant-list">
+          <article class="notification unread">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Регистрация подтверждена</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> Anime Fan Meetup</div>
+              </div>
+              <span class="type registration">Регистрация</span>
+            </div>
+            <p>
+              Организатор подтвердил вашу заявку. Вы зарегистрированы на мероприятие и можете отслеживать его в разделе «Мои регистрации».
+            </p>
+            <div class="notification-footer">
+              <span class="date">23 апреля 2026 · 09:10</span>
+              <a class="btn btn-outline" href="#">Перейти к мероприятию</a>
+            </div>
+          </article>
+
+          <article class="notification unread">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Мероприятие скоро начнется</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> Cosplay Showcase</div>
+              </div>
+              <span class="type reminder">Напоминание</span>
+            </div>
+            <p>
+              До начала мероприятия осталось 24 часа. Проверьте дату, время, место проведения и требования к участникам.
+            </p>
+            <div class="notification-footer">
+              <span class="date">22 апреля 2026 · 15:00</span>
+              <a class="btn btn-outline" href="#">Перейти к мероприятию</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Заявка отправлена</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> Anime Fan Meetup</div>
+              </div>
+              <span class="type registration">Регистрация</span>
+            </div>
+            <p>
+              Ваша заявка на участие отправлена организатору. После проверки заявки вы получите уведомление о подтверждении или отклонении.
+            </p>
+            <div class="notification-footer">
+              <span class="date">21 апреля 2026 · 12:10</span>
+              <a class="btn btn-outline" href="#">Перейти к мероприятию</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Изменено место проведения</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> K-pop Workshop</div>
+              </div>
+              <span class="type update">Изменение</span>
+            </div>
+            <p>
+              Организатор обновил адрес или формат проведения мероприятия. Ознакомьтесь с новым местом проведения.
+            </p>
+            <div class="notification-footer">
+              <span class="date">20 апреля 2026 · 10:20</span>
+              <a class="btn btn-outline" href="#">Перейти к мероприятию</a>
+            </div>
+          </article>
+
+          <article class="notification">
+            <div class="notification-head">
+              <div class="notification-title">
+                <h3>Мероприятие восстановлено</h3>
+                <div class="event-name"><strong>Мероприятие:</strong> Random Dance Day</div>
+              </div>
+              <span class="type block">Блокировка</span>
+            </div>
+            <p>
+              Администратор вернул карточку после проверки. Мероприятие снова доступно для просмотра.
+            </p>
+            <div class="notification-footer">
+              <span class="date">19 апреля 2026 · 14:20</span>
+              <a class="btn btn-outline" href="#">Перейти к мероприятию</a>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
