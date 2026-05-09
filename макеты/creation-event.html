@@ -20,9 +20,7 @@
       --danger:#f04438;
     }
 
-    *{
-      box-sizing:border-box;
-    }
+    *{box-sizing:border-box}
 
     body{
       margin:0;
@@ -31,10 +29,7 @@
       background:linear-gradient(180deg,#eef2ff 0%,#f4f6fb 100%);
     }
 
-    a{
-      color:inherit;
-      text-decoration:none;
-    }
+    a{color:inherit;text-decoration:none}
 
     .header{
       background:rgba(255,255,255,.92);
@@ -72,15 +67,9 @@
       flex-wrap:wrap;
     }
 
-    .nav a:hover{
-      color:var(--primary);
-    }
+    .nav a:hover{color:var(--primary)}
 
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
 
     .btn{
       display:inline-flex;
@@ -97,31 +86,11 @@
       text-align:center;
     }
 
-    .btn-outline{
-      background:#fff;
-      border-color:var(--border);
-      color:var(--text);
-    }
+    .btn-outline{background:#fff;border-color:var(--border);color:var(--text)}
+    .btn-primary{background:var(--primary);color:#fff;box-shadow:0 8px 20px rgba(79,70,229,.24)}
+    .btn-danger{background:#fff;color:var(--danger);border-color:#f4b4b0}
 
-    .btn-primary{
-      background:var(--primary);
-      color:#fff;
-      box-shadow:0 8px 20px rgba(79,70,229,.24);
-    }
-
-    .btn-danger{
-      background:#fff;
-      color:var(--danger);
-      border-color:#f4b4b0;
-    }
-
-    .page{
-      max-width:1280px;
-      margin:0 auto;
-      padding:24px;
-      display:grid;
-      gap:20px;
-    }
+    .page{max-width:1280px;margin:0 auto;padding:24px;display:grid;gap:20px}
 
     .title-box{
       background:var(--surface);
@@ -131,21 +100,11 @@
       padding:24px;
     }
 
-    .title-box h1{
-      margin:0;
-      font-size:30px;
-    }
+    .title-box h1{margin:0;font-size:30px}
 
-    .main{
-      display:grid;
-      grid-template-columns:280px 1fr;
-      gap:20px;
-      align-items:start;
-    }
+    .main{display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start}
 
-    .sidebar,
-    .content,
-    .form-section{
+    .sidebar,.content,.form-section{
       background:var(--surface);
       border:1px solid var(--border);
       border-radius:var(--radius);
@@ -161,15 +120,8 @@
       top:96px;
     }
 
-    .sidebar h2{
-      margin:0 0 6px;
-      font-size:18px;
-    }
-
-    .menu{
-      display:grid;
-      gap:10px;
-    }
+    .sidebar h2{margin:0 0 6px;font-size:18px}
+    .menu{display:grid;gap:10px}
 
     .menu-item{
       display:flex;
@@ -185,64 +137,22 @@
       color:var(--text);
     }
 
-    .menu-item.active{
-      border-color:#cfd8ff;
-      background:var(--primary-soft);
-      color:var(--primary-dark);
-    }
+    .menu-item.active{border-color:#cfd8ff;background:var(--primary-soft);color:var(--primary-dark)}
 
-    .content{
-      padding:20px;
-      display:grid;
-      gap:16px;
-    }
+    .content{padding:20px;display:grid;gap:16px}
 
-    .section-head{
-      display:flex;
-      justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
-      align-items:flex-start;
-    }
+    .section-head{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:flex-start}
+    .section-head h2{margin:0;font-size:22px}
 
-    .section-head h2{
-      margin:0;
-      font-size:22px;
-    }
+    .form-section{box-shadow:none;padding:18px;display:grid;gap:16px}
+    .form-section h3{margin:0;font-size:20px}
+    .form{display:grid;gap:16px}
 
-    .form-section{
-      box-shadow:none;
-      padding:18px;
-      display:grid;
-      gap:16px;
-    }
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 
-    .form-section h3{
-      margin:0;
-      font-size:20px;
-    }
+    .field label{display:block;margin-bottom:8px;font-size:14px;font-weight:700}
 
-    .form{
-      display:grid;
-      gap:16px;
-    }
-
-    .row{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-    }
-
-    .field label{
-      display:block;
-      margin-bottom:8px;
-      font-size:14px;
-      font-weight:700;
-    }
-
-    .field input,
-    .field textarea,
-    .field select{
+    .field input,.field textarea,.field select{
       width:100%;
       min-height:48px;
       border:1px solid var(--border);
@@ -255,12 +165,7 @@
       color:var(--text);
     }
 
-    .field textarea{
-      min-height:120px;
-      padding:12px 14px;
-      resize:vertical;
-      line-height:1.6;
-    }
+    .field textarea{min-height:120px;padding:12px 14px;resize:vertical;line-height:1.6}
 
     .field select{
       appearance:none;
@@ -268,27 +173,14 @@
         linear-gradient(45deg, transparent 50%, var(--muted) 50%),
         linear-gradient(135deg, var(--muted) 50%, transparent 50%),
         #fff;
-      background-position:
-        calc(100% - 18px) 21px,
-        calc(100% - 13px) 21px,
-        0 0;
-      background-size:
-        5px 5px,
-        5px 5px,
-        100% 100%;
+      background-position:calc(100% - 18px) 21px,calc(100% - 13px) 21px,0 0;
+      background-size:5px 5px,5px 5px,100% 100%;
       background-repeat:no-repeat;
       padding-right:38px;
     }
 
-    .choice-group{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .choice-input{
-      display:none;
-    }
+    .choice-group{display:flex;gap:10px;flex-wrap:wrap}
+    .choice-input{display:none}
 
     .choice-label{
       display:inline-flex;
@@ -318,11 +210,12 @@
     #format-offline:checked ~ .choice-group label[for="format-offline"],
     #registration-external:checked ~ .choice-group label[for="registration-external"],
     #registration-internal:checked ~ .choice-group label[for="registration-internal"],
+    #registration-none:checked ~ .choice-group label[for="registration-none"],
+    #confirm-yes:checked ~ .choice-group label[for="confirm-yes"],
+    #confirm-no:checked ~ .choice-group label[for="confirm-no"],
     #price-free:checked ~ .choice-group label[for="price-free"],
     #price-fixed:checked ~ .choice-group label[for="price-fixed"],
-    #price-from:checked ~ .choice-group label[for="price-from"],
-    #confirm-yes:checked ~ .choice-group label[for="confirm-yes"],
-    #confirm-no:checked ~ .choice-group label[for="confirm-no"]{
+    #price-from:checked ~ .choice-group label[for="price-from"]{
       border-color:#cfd8ff;
       background:var(--primary-soft);
       color:var(--primary-dark);
@@ -332,40 +225,20 @@
     #format-offline:checked ~ .choice-group label[for="format-offline"]::before,
     #registration-external:checked ~ .choice-group label[for="registration-external"]::before,
     #registration-internal:checked ~ .choice-group label[for="registration-internal"]::before,
+    #registration-none:checked ~ .choice-group label[for="registration-none"]::before,
+    #confirm-yes:checked ~ .choice-group label[for="confirm-yes"]::before,
+    #confirm-no:checked ~ .choice-group label[for="confirm-no"]::before,
     #price-free:checked ~ .choice-group label[for="price-free"]::before,
     #price-fixed:checked ~ .choice-group label[for="price-fixed"]::before,
-    #price-from:checked ~ .choice-group label[for="price-from"]::before,
-    #confirm-yes:checked ~ .choice-group label[for="confirm-yes"]::before,
-    #confirm-no:checked ~ .choice-group label[for="confirm-no"]::before{
+    #price-from:checked ~ .choice-group label[for="price-from"]::before{
       border-color:var(--primary);
-      background:
-        radial-gradient(circle, var(--primary) 0 42%, transparent 46%),
-        #fff;
+      background:radial-gradient(circle, var(--primary) 0 42%, transparent 46%),#fff;
     }
 
-    .tags-box{
-      display:grid;
-      gap:12px;
-    }
-
-    .tag-input-row{
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:10px;
-      align-items:end;
-    }
-
-    .tag-input-row .btn{
-      min-height:48px;
-      height:48px;
-      padding:0 18px;
-    }
-
-    .tags-list{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
+    .tags-box{display:grid;gap:12px}
+    .tag-input-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}
+    .tag-input-row .btn{min-height:48px;height:48px;padding:0 18px}
+    .tags-list{display:flex;gap:8px;flex-wrap:wrap}
 
     .tag{
       display:inline-flex;
@@ -379,76 +252,17 @@
       font-weight:700;
     }
 
-    .tag button{
-      border:0;
-      background:transparent;
-      color:var(--primary-dark);
-      cursor:pointer;
-      font-weight:700;
-      padding:0;
-      font-size:14px;
-    }
+    .tag button{border:0;background:transparent;color:var(--primary-dark);cursor:pointer;font-weight:700;padding:0;font-size:14px}
 
-    .registration-block{
-      display:none;
-      border:1px solid var(--border);
-      border-radius:16px;
-      background:#f8faff;
-      padding:16px;
-    }
+    .registration-block{display:none;border:1px solid var(--border);border-radius:16px;background:#f8faff;padding:16px}
+    #registration-external:checked ~ .external-registration{display:grid;gap:14px}
+    #registration-internal:checked ~ .internal-registration{display:grid;gap:16px}
+    #registration-none:checked ~ .no-registration{display:grid;gap:14px}
 
-    #registration-external:checked ~ .external-registration{
-      display:grid;
-      gap:16px;
-    }
-
-    #registration-internal:checked ~ .internal-registration{
-      display:grid;
-      gap:16px;
-    }
-
-    .price-block{
-      display:grid;
-      gap:14px;
-      border:1px solid var(--border);
-      border-radius:16px;
-      background:#fff;
-      padding:16px;
-    }
-
-    .price-block h4{
-      margin:0;
-      font-size:18px;
-    }
-
-    .price-field{
-      display:none;
-    }
-
-    #price-fixed:checked ~ .fixed-price-field{
-      display:block;
-    }
-
-    #price-from:checked ~ .from-price-field{
-      display:block;
-    }
-
-    .builder{
-      display:grid;
-      gap:14px;
-    }
-
-    .builder-controls{
-      display:grid;
-      grid-template-columns:1fr 220px auto;
-      gap:10px;
-      align-items:end;
-    }
-
-    .form-fields-list{
-      display:grid;
-      gap:10px;
-    }
+    .builder{display:grid;gap:14px}
+    .builder-controls{display:grid;grid-template-columns:1fr 220px auto;gap:10px;align-items:end}
+    .price-details{display:grid;grid-template-columns:1fr;gap:14px}
+    .form-fields-list{display:grid;gap:10px}
 
     .form-field-preview{
       border:1px solid var(--border);
@@ -461,19 +275,9 @@
       align-items:center;
     }
 
-    .preview-title{
-      display:grid;
-      gap:4px;
-    }
-
-    .preview-title strong{
-      font-size:14px;
-    }
-
-    .preview-title span{
-      color:var(--muted);
-      font-size:12px;
-    }
+    .preview-title{display:grid;gap:4px}
+    .preview-title strong{font-size:14px}
+    .preview-title span{color:var(--muted);font-size:12px}
 
     .field-type{
       color:var(--muted);
@@ -485,114 +289,27 @@
       text-align:center;
     }
 
-    .required-check{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.5;
-    }
+    .required-check,.legal-check{display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:14px;line-height:1.5}
+    .required-check input,.legal-check input{width:16px;height:16px;accent-color:var(--primary);margin-top:2px}
+    .legal-check a{color:var(--primary-dark);font-weight:700;text-decoration:underline;text-underline-offset:2px}
 
-    .required-check input{
-      width:16px;
-      height:16px;
-      accent-color:var(--primary);
-    }
-
-    .note{
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:14px;
-      background:#fff;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.6;
-    }
-
-    .form-actions{
-      display:flex;
-      justify-content:flex-end;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:4px;
-    }
-
-
-    .legal-check{
-      display:flex;
-      align-items:flex-start;
-      gap:10px;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.5;
-    }
-
-    .legal-check input{
-      margin-top:2px;
-      accent-color:var(--primary);
-    }
-
-    .legal-check a,
-    .check a,
-    .complaint-note a,
-    .review-note a{
-      color:var(--primary-dark);
-      font-weight:700;
-      text-decoration:underline;
-      text-underline-offset:2px;
-    }
+    .note{border:1px solid var(--border);border-radius:14px;padding:14px;background:#fff;color:var(--muted);font-size:13px;line-height:1.6}
+    .form-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:4px}
 
     @media (max-width:1080px){
-      .main{
-        grid-template-columns:1fr;
-      }
-
-      .sidebar{
-        position:static;
-      }
-
-      .builder-controls,
-      .tag-input-row{
-        grid-template-columns:1fr;
-      }
-
-      .form-field-preview{
-        grid-template-columns:1fr;
-      }
+      .main{grid-template-columns:1fr}
+      .sidebar{position:static}
+      .builder-controls,.tag-input-row,.price-details{grid-template-columns:1fr}
+      .form-field-preview{grid-template-columns:1fr}
     }
 
     @media (max-width:760px){
-      .header-inner,
-      .page{
-        padding-left:16px;
-        padding-right:16px;
-      }
-
-      .nav,
-      .actions{
-        justify-content:flex-start;
-      }
-
-      .content,
-      .sidebar{
-        padding:18px;
-      }
-
-      .row{
-        grid-template-columns:1fr;
-      }
-
-      .choice-group,
-      .form-actions{
-        flex-direction:column;
-        align-items:stretch;
-      }
-
-      .choice-label,
-      .btn{
-        width:100%;
-      }
+      .header-inner,.page{padding-left:16px;padding-right:16px}
+      .nav,.actions{justify-content:flex-start}
+      .content,.sidebar{padding:18px}
+      .row{grid-template-columns:1fr}
+      .choice-group,.form-actions{flex-direction:column;align-items:stretch}
+      .choice-label,.btn{width:100%}
     }
   </style>
 </head>
@@ -755,132 +472,74 @@
 
           <section class="form-section">
             <h3>Регистрация</h3>
-
-            <input class="choice-input" type="radio" name="registration-type" id="registration-external" />
             <input class="choice-input" type="radio" name="registration-type" id="registration-internal" checked />
-
+            <input class="choice-input" type="radio" name="registration-type" id="registration-external" />
+            <input class="choice-input" type="radio" name="registration-type" id="registration-none" />
+            
             <div class="choice-group">
               <label class="choice-label" for="registration-internal">Внутренняя регистрация</label>
               <label class="choice-label" for="registration-external">Внешняя регистрация</label>
+              <label class="choice-label" for="registration-none">Без регистрации</label>
             </div>
 
             <div class="registration-block external-registration">
-              <div class="field">
-                <label for="external-link">Ссылка на регистрацию</label>
-                <input id="external-link" type="url" placeholder="https://example.com/register" />
-              </div>
+              <div class="field"><label for="external-link">Ссылка на регистрацию</label><input id="external-link" type="url" placeholder="https://example.com/register" /></div>
 
-              <div class="price-block">
-                <h4>Стоимость регистрации</h4>
-
+              <div>
                 <input class="choice-input" type="radio" name="price-type" id="price-free" checked />
                 <input class="choice-input" type="radio" name="price-type" id="price-fixed" />
                 <input class="choice-input" type="radio" name="price-type" id="price-from" />
-
+                <label style="display:block;margin-bottom:8px;font-size:14px;font-weight:700;">Стоимость участия</label>
                 <div class="choice-group">
                   <label class="choice-label" for="price-free">Бесплатно</label>
                   <label class="choice-label" for="price-fixed">Фиксированная цена</label>
                   <label class="choice-label" for="price-from">Цена от</label>
                 </div>
+              </div>
 
-                <div class="field price-field fixed-price-field">
-                  <label for="fixed-price">Фиксированная цена</label>
-                  <input id="fixed-price" type="number" min="0" step="1" placeholder="Например: 500" />
-                </div>
-
-                <div class="field price-field from-price-field">
-                  <label for="from-price">Минимальная цена</label>
-                  <input id="from-price" type="number" min="0" step="1" placeholder="Например: 300" />
+              <div class="price-details">
+                <div class="field">
+                  <label for="price-value">Значение стоимости</label>
+                  <input id="price-value" type="text" placeholder="Например: 1200 ₽ или от 500 ₽" />
                 </div>
               </div>
 
-              <div class="note">
-                При внешней регистрации пользователь будет переходить на сторонний ресурс. На платформе можно будет отметить, что регистрация была выполнена. Стоимость указывается информационно, оплата на сайте PopCulture Events не выполняется.
-              </div>
+              <div class="note">При внешней регистрации пользователь будет переходить на сторонний ресурс. Условия оплаты и участия определяются организатором на внешнем сайте.</div>
             </div>
 
             <div class="registration-block internal-registration">
               <div class="builder">
-                <div class="note">
-                  Внутренняя регистрация выполняется через форму на сайте. Организатор может добавить поля, которые пользователь должен заполнить при регистрации.
-                </div>
-
+                <div class="note">Внутренняя регистрация выполняется через форму на сайте. Организатор может добавить поля, которые пользователь должен заполнить при регистрации.</div>
                 <div class="builder-controls">
-                  <div class="field">
-                    <label for="field-name">Название поля</label>
-                    <input id="field-name" type="text" placeholder="Например: Имя, Телефон, Комментарий" />
-                  </div>
-
+                  <div class="field"><label for="field-name">Название поля</label><input id="field-name" type="text" placeholder="Например: Имя, Телефон, Комментарий" /></div>
                   <div class="field">
                     <label for="field-type">Тип поля</label>
                     <select id="field-type">
-                      <option>Текстовое поле</option>
-                      <option>Электронная почта</option>
-                      <option>Телефон</option>
-                      <option>Число</option>
-                      <option>Дата</option>
-                      <option>Выпадающий список</option>
-                      <option>Многострочный текст</option>
-                      <option>Флажок</option>
+                      <option>Текстовое поле</option><option>Электронная почта</option><option>Телефон</option><option>Число</option><option>Дата</option><option>Выпадающий список</option><option>Многострочный текст</option><option>Флажок</option>
                     </select>
                   </div>
-
                   <button class="btn btn-outline" type="button">Добавить поле</button>
                 </div>
-
-                <label class="required-check">
-                  <input type="checkbox" checked />
-                  Сделать добавляемое поле обязательным
-                </label>
-
+                <label class="required-check"><input type="checkbox" checked /> Сделать добавляемое поле обязательным</label>
                 <div class="form-fields-list">
-                  <div class="form-field-preview">
-                    <div class="preview-title">
-                      <strong>Имя</strong>
-                      <span>Обязательное поле</span>
-                    </div>
-                    <div class="field-type">Текстовое поле</div>
-                    <button class="btn btn-danger" type="button">Удалить</button>
-                  </div>
-
-                  <div class="form-field-preview">
-                    <div class="preview-title">
-                      <strong>Электронная почта</strong>
-                      <span>Обязательное поле</span>
-                    </div>
-                    <div class="field-type">Электронная почта</div>
-                    <button class="btn btn-danger" type="button">Удалить</button>
-                  </div>
-
-                  <div class="form-field-preview">
-                    <div class="preview-title">
-                      <strong>Телефон</strong>
-                      <span>Обязательное поле</span>
-                    </div>
-                    <div class="field-type">Телефон</div>
-                    <button class="btn btn-danger" type="button">Удалить</button>
-                  </div>
-
-                  <div class="form-field-preview">
-                    <div class="preview-title">
-                      <strong>Комментарий</strong>
-                      <span>Необязательное поле</span>
-                    </div>
-                    <div class="field-type">Многострочный текст</div>
-                    <button class="btn btn-danger" type="button">Удалить</button>
-                  </div>
+                  <div class="form-field-preview"><div class="preview-title"><strong>Имя</strong><span>Обязательное поле</span></div><div class="field-type">Текстовое поле</div><button class="btn btn-danger" type="button">Удалить</button></div>
+                  <div class="form-field-preview"><div class="preview-title"><strong>Электронная почта</strong><span>Обязательное поле</span></div><div class="field-type">Электронная почта</div><button class="btn btn-danger" type="button">Удалить</button></div>
+                  <div class="form-field-preview"><div class="preview-title"><strong>Телефон</strong><span>Обязательное поле</span></div><div class="field-type">Телефон</div><button class="btn btn-danger" type="button">Удалить</button></div>
+                  <div class="form-field-preview"><div class="preview-title"><strong>Комментарий</strong><span>Необязательное поле</span></div><div class="field-type">Многострочный текст</div><button class="btn btn-danger" type="button">Удалить</button></div>
                 </div>
-
                 <div>
                   <input class="choice-input" type="radio" name="registration-confirmation" id="confirm-yes" checked />
                   <input class="choice-input" type="radio" name="registration-confirmation" id="confirm-no" />
-
                   <div class="choice-group">
                     <label class="choice-label" for="confirm-yes">Регистрация с подтверждением</label>
                     <label class="choice-label" for="confirm-no">Регистрация без подтверждения</label>
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div class="registration-block no-registration">
+              <div class="note">Для этого мероприятия регистрация не требуется. Пользователь сможет просматривать карточку мероприятия, добавлять ее в избранное и получать уведомления об изменениях, если мероприятие добавлено в избранное, но заявка на участие и список участников формироваться не будут.</div>
             </div>
           </section>
 
